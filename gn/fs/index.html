@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <title>JUN-功能-分数折合</title>
+<link rel="shortcut icon" href="../..//img/favicon.ico">
+</head>
+<body>
+   <center> 
+    <h2>成绩计算器</h2>
+<a>注：生物地理输入折合后的总分,其他成绩输入原始分数</a>
+    <form id="myForm">
+        语文: <input type="number" id="chinese"><br><br>
+        数学: <input type="number" id="math"><br><br>
+        英语: <input type="number" id="english"><br><br>
+        政治: <input type="number" id="politics"><br><br>
+        历史: <input type="number" id="history"><br><br>
+        物理: <input type="number" id="physics"><br><br>
+        化学: <input type="number" id="chemistry"><br><br>
+        生物地理: <input type="number" id="bio_geo"><br><br> 
+        体育: <input type= "number" id= "pe"><br><br> 
+        总分：<span id='total'></span> 
+    </form>
+
+    <button onclick='calculate()'>计算总分</button>
+
+    <script>
+
+      function calculate() {
+          var chinese = document.getElementById('chinese').value;
+          var math = document.getElementById('math').value;
+          var english = document.getElementById('english').value;
+          var politics = document.getElementById('politics').value * 0.6;
+          var history = document.getElementById('history').value * 0.6;
+          var physics = document.getElementById('physics').value * 0.7;
+          var chemistry = document.getElementById('chemistry').value * 0.5;
+          var bio_geo = document.getElementById('bio_geo').value; 
+          var pe= document.getElementById("pe").value; 
+
+          var total = parseFloat(chinese) + parseFloat(math) + parseFloat(english) + parseFloat(politics) + parseFloat(history) + parseFloat(physics) + parseFloat(chemistry) + parseFloat(bio_geo)+parseFloat(pe);
+          
+          if (isNaN(total)) {
+              alert("请输入所有科目的分数");
+              return false;
+          }
+
+          document.getElementById("total").innerHTML= total; 
+      }
+    </script>
+   </center> 
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html class="hide-aside" lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" href="../..//img/favicon.ico">
+    <title>JUN-功能-小爱同学</title>
+</head>
+<body>
+<center>
+<form>
+  <label for="msg">请输入内容:</label><br>
+  <input type="text" id="msg" name="msg"><br>
+  <button type="button" onclick="send()">发送</button>
+</form>
+</center>
+<script>
+function send() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("response").innerHTML =
+      this.responseText;
+    }
+  };
+  var msg = document.getElementById("msg").value;
+  xhttp.open("GET", "https://v.api.aa1.cn/api/api-xiaoai/talk.php?msg=" + msg, true);
+  xhttp.send();
+}
+</script>
+<center>
+<p id="response"></p>
+</center>
+</body>
+</html>

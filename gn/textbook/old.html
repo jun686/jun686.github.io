@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>JUN-功能-高中电子课本</title>
+<link rel="shortcut icon" href="../..//img/favicon.ico">
+<meta name="referrer" content="no-referrer" />
+    <style>
+        .page {
+            display: none;
+        }
+    </style>
+<style>
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+
+
+.form-container input[type=text] {
+  padding: 10px;
+  margin: auto;
+  border: none;
+  width: 80%;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  margin: auto;
+  border: none;
+  cursor: pointer;
+}
+
+.form-container button:hover {
+  background-color: #45a049;
+}
+</style>
+
+</head>
+<body>
+<center>
+    <button onclick="showPage('语文')">语文+7</button>
+    <button onclick="showPage('数学')">数学+7</button>
+    <button onclick="showPage('英语')">英语+7</button>
+    <button onclick="showPage('物理')">物理+5</button>
+    <button onclick="showPage('化学')">化学+5</button>
+    <button onclick="showPage('政治')">政治+5</button>
+    <button onclick="showPage('历史')">历史+7</button>
+    <button onclick="showPage('地理')">地理+5</button>
+    <button onclick="showPage('生物')">生物+9</button>
+<input type="text" placeholder="点击科目后再次输入跳转的页码" name="number" id="number">
+    <div id="语文" class="page">
+        <!-- 语文页面的HTML源代码 -->
+<form>
+<button type="button" onclick="changeImagea()">跳转到页面</button>
+</form>
+<div class="container">
+<img id="myImga" src="https://r1-ndr.ykt.cbern.com.cn/edu_product/65/document/7a69755810bb492c9e44f94a213b7e5e/image/1.jpg" alt="your image">
+<div class="form-container">
+
+</div>
+</div>
+<script>
+function changeImagea() {
+var input = document.getElementById("number").value;
+var img = document.getElementById("myImga");
+img.src = "https://r1-ndr.ykt.cbern.com.cn/edu_product/65/document/7a69755810bb492c9e44f94a213b7e5e/image/" + input + ".jpg";
+}
+</script>
+    </div>
+
+
+    <div id="数学" class="page">
+        <!-- 数学页面的HTML源代码 -->
+<form>
+<button type="button" onclick="changeImageb()">跳转到页面</button>
+</form>
+<div class="container">
+<img id="myImgb" src="https://r1-ndr.ykt.cbern.com.cn/edu_product/65/document/42e50c0ec8754db89609ec2e7187e5bf/image/1.jpg" alt="your image">
+<div class="form-container">
+
+</div>
+</div>
+
+<script>
+function changeImageb() {
+var input = document.getElementById("number").value;
+var img = document.getElementById("myImgb");
+img.src = "https://r1-ndr.ykt.cbern.com.cn/edu_product/65/document/42e50c0ec8754db89609ec2e7187e5bf/image/" + input + ".jpg";
+}
+</script>
+    </div>
+
+
+
+
+
+    <div id="英语" class="page">
+        <!-- 英语页面的HTML源代码 -->
+<form>
+<button type="button" onclick="changeImagec()">跳转到页面</button>
+</form>
+<div class="container">
+<img id="myImgc" src="https://r3-ndr.ykt.cbern.com.cn/edu_product/65/document/b88d6f2931404e31aba52423dc0c8f51/image/1.jpg" alt="your image">
+<div class="form-container">
+
+</div>
+</div>
+
+<script>
+function changeImagec() {
+var input = document.getElementById("number").value;
+var img = document.getElementById("myImgc");
+img.src = "https://r3-ndr.ykt.cbern.com.cn/edu_product/65/document/b88d6f2931404e31aba52423dc0c8f51/image/" + input + ".jpg";
+}
+</script>
+    </div>
+
+    <div id="物理" class="page">
+        <!-- 物理页面的HTML源代码 -->
+<form>
+<button type="button" onclick="changeImaged()">跳转到页面</button>
+</form>
+<div class="container">
+<img id="myImgd" src="https://r3-ndr.ykt.cbern.com.cn/edu_product/65/document/f337ed5f0c324e1c8f6ba33821830710/image/1.jpg" alt="your image">
+<div class="form-container">
+
+</div>
+</div>
+
+<script>
+function changeImaged() {
+var input = document.getElementById("number").value;
+var img = document.getElementById("myImgd");
+img.src = "https://r3-ndr.ykt.cbern.com.cn/edu_product/65/document/f337ed5f0c324e1c8f6ba33821830710/image/" + input + ".jpg";
+}
+</script>
+    </div>
+
+    <div id="化学" class="page">
+        <!-- 化学页面的HTML源代码 -->
+<form>
+<button type="button" onclick="changeImagee()">跳转到页面</button>
+</form>
+<div class="container">
+<img id="myImge" src="https://r2-ndr.ykt.cbern.com.cn/edu_product/65/document/5310f6be1fdd4373b2f193c47763f8c5/image/1.jpg" alt="your image">
+<div class="form-container">
+
+</div>
+</div>
+
+<script>
+function changeImagee() {
+var input = document.getElementById("number").value;
+var img = document.getElementById("myImge");
+img.src = "https://r2-ndr.ykt.cbern.com.cn/edu_product/65/document/5310f6be1fdd4373b2f193c47763f8c5/image/" + input + ".jpg";
+}
+</script>
+    </div>
+
+    <div id="政治" class="page">
+        <!-- 政治页面的HTML源代码 -->
+<form>
+<button type="button" onclick="changeImagef()">跳转到页面</button>
+</form>
+<div class="container">
+<img id="myImgf" src="https://r1-ndr.ykt.cbern.com.cn/edu_product/65/document/9369c9451c1e480b99312e5c84698819/image/1.jpg" alt="your image">
+<div class="form-container">
+
+</div>
+</div>
+
+<script>
+function changeImagef() {
+var input = document.getElementById("number").value;
+var img = document.getElementById("myImgf");
+img.src = "https://r1-ndr.ykt.cbern.com.cn/edu_product/65/document/9369c9451c1e480b99312e5c84698819/image/" + input + ".jpg";
+}
+</script>
+    </div>
+
+    <div id="历史" class="page">
+        <!-- 历史页面的HTML源代码 -->
+<form>
+<button type="button" onclick="changeImageg()">跳转到页面</button>
+</form>
+<div class="container">
+<img id="myImgg" src="https://r3-ndr.ykt.cbern.com.cn/edu_product/65/document/e6ce3a276ed6463da8302fb8336b0799/image/1.jpg" alt="your image">
+<div class="form-container">
+
+</div>
+</div>
+
+<script>
+function changeImageg() {
+var input = document.getElementById("number").value;
+var img = document.getElementById("myImgg");
+img.src = "https://r3-ndr.ykt.cbern.com.cn/edu_product/65/document/e6ce3a276ed6463da8302fb8336b0799/image/" + input + ".jpg";
+}
+</script>
+    </div>
+
+    <div id="地理" class="page">
+        <!-- 地理页面的HTML源代码 -->
+<form>
+<button type="button" onclick="changeImageh()">跳转到页面</button>
+</form>
+<div class="container">
+<img id="myImgh" src="https://r2-ndr.ykt.cbern.com.cn/edu_product/65/document/19dd3d0becf847a1ae65646d23ef8cef/image/1.jpg" alt="your image">
+<div class="form-container">
+
+</div>
+</div>
+
+<script>
+function changeImageh() {
+var input = document.getElementById("number").value;
+var img = document.getElementById("myImgh");
+img.src = "https://r2-ndr.ykt.cbern.com.cn/edu_product/65/document/19dd3d0becf847a1ae65646d23ef8cef/image/" + input + ".jpg";
+}
+</script>
+    </div>
+
+    <div id="生物" class="page">
+        <!-- 生物页面的HTML源代码 -->
+<form>
+<button type="button" onclick="changeImagei()">跳转到页面</button>
+</form>
+<div class="container">
+<img id="myImgi" src="https://r2-ndr.ykt.cbern.com.cn/edu_product/65/document/37e184f8f54e4548b25d7134945abeec/image/1.jpg" alt="your image">
+<div class="form-container">
+
+</div>
+</div>
+
+<script>
+function changeImagei() {
+var input = document.getElementById("number").value;
+var img = document.getElementById("myImgi");
+img.src = "https://r2-ndr.ykt.cbern.com.cn/edu_product/65/document/37e184f8f54e4548b25d7134945abeec/image/" + input + ".jpg";
+}
+</script>
+    </div>
+<script type="text/javascript">
+function showPage(pageName) {
+  var i;
+  var pages = document.getElementsByClassName("page");
+  for (i = 0; i < pages.length; i++) {
+      pages[i].style.display = "none";
+  }
+  document.getElementById(pageName).style.display = "block";
+}
+</script>
+
+</center>
+</body>
+</html>

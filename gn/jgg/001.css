@@ -1,0 +1,23 @@
+
+
+.page-footer {
+	position: fixed;
+	right: 35px;
+	bottom: 20px;
+	display: flex;
+	align-items: center;
+	padding: 5px;
+	color: #000;
+	background: hsla(0, 0%, 100%, .65)
+}
+
+.page-footer a {
+	display: flex;
+	margin-left: 4px
+}
+
+.touxiang {
+	bottom: 0;
+	width: 30px;
+	height: 30px
+}
