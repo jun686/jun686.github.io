@@ -1,82 +1,78 @@
 <!DOCTYPE html>
-<html class="hide-aside" lang="zh-CN" data-theme="light">
-<html>
-    <title>JUN-CONTACT</title>
-<link rel="shortcut icon" href="img/favicon.ico">
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JUN-CONTACT</title>
+<link rel="shortcut icon" href="https://jun.now.cc/img/favicon.ico">
     <style>
-        body, html {
-            height: 100%;
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
         }
-        
+
         .container {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 50px;
         }
-        
-        .message-area {
-            height: 90%;
-            border: 1px solid #ccc;
-            overflow-y: auto;
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        #chatLog {
+            margin-bottom: 20px;
             padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            height: 410px;
+            overflow-y: auto;
+            text-align: center;
         }
-        
-        .editor-area {
-            height: 10%;
-            display: flex;
+
+        #inputText {
+            width: calc(100% - 110px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+            font-size: 16px;
         }
-        
-        .input-wrapper {
-            width: 90%;
-            display: flex;
-        }
-        
-        .input-box {
-            flex: 1;
-            padding: 5px;
-        }
-        
-        .send-button {
-            width: 10%;
-            background-color: green;
+
+        #sendButton {
+            padding: 10px 20px;
+            background-color: #4CAF50;
             color: white;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
         }
 
-        .success-message {
-            color: green;
-            text-align: center;
-        }
-        
-        .failure-message {
-            color: red;
-            text-align: center;
-        }
-
-        .sent-text {
-            text-align: center;
+        #sendButton:hover {
+            background-color: #45a049;
         }
     </style>
-</head>
-<body>
-    <div class="container">
-        <div class="message-area" id="messageArea"></div>
+<div class="container">
+        <div id="chatLog"></div>
         <div class="editor-area">
             <div class="input-wrapper">
-                <input type="text" class="input-box" id="messageInput" placeholder="在这里输入消息">
-            </div>
-            <button class="send-button" onclick="sendMessage()">发送</button>
-        </div>
+                <input type="text" class="input-box" id="inputText" placeholder="在这里输入消息">
+            <button id="sendButton" class="send-button" onclick="sendChat()">发送</button>
     </div>
 
     <script>
-        function sendMessage() {
-            var message = document.getElementById("messageInput").value;
+        function sendChat() {
+            var message = document.getElementById("inputText").value;
             var encodedMessage = encodeURIComponent(message);
             
             // 获取经纬度位置
@@ -93,28 +89,30 @@ xhr.onreadystatechange = function() {
     if (xhr.readyState === 4 && xhr.status === 200) {
         var response = JSON.parse(xhr.responseText);
         if (response.msg === "请求成功") {
-            appendMessage("<div class='success-message'>发送成功</div>");
-            document.getElementById("messageInput").value = ""; // 清空输入框内容
+            var inputText = document.getElementById("inputText").value; // 获取输入框内容
+            appendMessage(inputText + "<div class='success-message'>发送成功</div>");
+            document.getElementById("inputText").value = ""; // 清空输入框内容
         } else {
             appendMessage("<div class='failure-message'>发送失败</div>");
         }
     }
 };
+
 xhr.send();
 
                 xhr.send();
 
-                appendMessage("<div class='sent-text'>" + message + "</div>");
+                appendMessage("<div class='chatLog'>" + message + "</div>");
             });
         }
 
         function appendMessage(message) {
-            var messageArea = document.getElementById("messageArea");
+            var chatLog = document.getElementById("chatLog");
             var newMessage = document.createElement("div");
             newMessage.innerHTML = message;
-            messageArea.appendChild(newMessage);
+            chatLog.appendChild(newMessage);
 
-            messageArea.scrollTop = messageArea.scrollHeight;
+            chatLog.scrollTop = chatLog.scrollHeight;
         }
     </script>
 </body>
