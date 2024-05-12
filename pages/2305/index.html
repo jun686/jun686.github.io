@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="language" content="zh-CN">
+
+    <title>K2305</title>
+    <link rel="shortcut icon" href="../..//img/favicon.ico">
+    <link rel="stylesheet" href="style.css">
+    <style type="text/css">
+        body {
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: rgb(4, 4, 22);
+        }
+
+        #contents {
+            color: pink;
+            font-size: 2em;
+            text-align: center;
+            width: 100%;
+            height: 100px;
+            text-transform: none;
+        }
+        .type_words{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:180px;height:180px;color:#f1dadb;padding:20px;text-transform:lowercase;}
+    </style>
+</head>
+
+<body onclick="bodyPlayMusic()">
+    <div class="type_words" id="contents">李老师辛苦了<br>🎉</div>
+    <canvas id="pinkboard" width="1707" height="868"></canvas>
+    <canvas id="heart" width="1000" height="600"></canvas>
+
+    <audio id="audio" src="https://music.163.com/song/media/outer/url?id=1804855517.mp3" preload="auto"
+        loop="loop"></audio>
+    <script>
+        var shouci = true;
+        console.log(shouci);
+        function bodyPlayMusic() {
+            if (shouci) {
+                shouci = false;
+                audio.play();
+                console.log(shouci);
+            }
+        };
+    </script>
+    <script src="lxheart.js"></script>
+    <script src="filltext.js"></script>
+    <script>
+        // 修改文字 想要多几个飘着的文字
+        var texts = ['曹圣哲', '陈博轩', '陈昊', '邓锦宸', '高川', '谷镕宇', '贺晨皓', '贺逸诚', '黄子轩', '李江涛', '刘皓宇', '刘晋彰', '刘羽涵', '罗彬', '马启洋', '聂志恒', '谭临春', '唐子航', '王豪帅', '王俊', '易奇奥', '易尚咏', '禹思哲', '张权奥', '张耀锋', '钟宇辰', '曹艺严', '陈铭', '陈雅琦', '陈钰琪', '邓舒安', '董佳', '樊添翼', '郭可馨', '郭星雨', '何方淇', '胡雨欢', '雷康晴勤', '李嘉文', '李美怡', '李雨晨', '李思琦', '莫雨轩', '彭丽雯', '阮煜程', '谭程程', '王偲涵', '夏子怡', '徐梓钰', '严艺菲', '颜可馨', '杨依芳', '张静雯', '赵碧畅', '周雅婷', '❤️'];
+        // '#ff30c5' '#ea80b0'
+        // 第二个参数不传 默认爱心颜色 #ea80b0
+        renderLxHeart(document.getElementById('heart'), '#ec9bad');
+        fillText(document.getElementById('pinkboard'), texts)
+    </script>
+</body>
+
+</html>
