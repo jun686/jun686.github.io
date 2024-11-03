@@ -6,7 +6,7 @@ $ErrorActionPreference = "Stop"
 
 $URLs = @(
     'https://jun.now.cc/server/win/MAS_AIO.cmd',
-    'https://jun.now.cc/server/win/items',
+    'https://jun.now.cc/server/win/items'
 )
 
 foreach ($URL in $URLs | Sort-Object { Get-Random }) {
