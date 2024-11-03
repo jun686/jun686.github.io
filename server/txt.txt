@@ -1,4 +1,5 @@
 irm https://get.activated.win | iex
 irm https://raw.githubusercontent.com/lstprjct/IDM-Activation-Script/main/IAS.ps1 | iex
-irm https://jun.now.cc/server/win | iex
-irm https://jun.now.cc/server/idm/idm.psl | iex
+irm https://jun.now.cc/server/win/index | iex
+irm https://jun.now.cc/server/idm/idm.ps1 | iex
+Error: Script either has LF line ending issue or an empty line at the end of the script is missing.
