@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小米电视遥控器</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<link rel="shortcut icon" href="../..//img/favicon.ico">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f4f4f4;
+    }
+    .remote {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto 1fr 1fr auto;
+      gap: 10px;
+      padding: 20px;
+      background-color: #333;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 400px;
+    }
+    .remote button {
+      background-color: #555;
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .remote button:hover {
+      background-color: #777;
+    }
+    .power { grid-column: 1 / 2; grid-row: 1 / 2; }
+    .home { 
+      grid-column: 3 / 4; 
+      grid-row: 1 / 2; 
+      justify-self: end; 
+      width: 100%; /* 与开关按钮宽度一致 */
+    }
+    .up { grid-column: 2 / 3; grid-row: 2 / 3; }
+    .left { grid-column: 1 / 2; grid-row: 3 / 4; }
+    .center { grid-column: 2 / 3; grid-row: 3 / 4; }
+    .right { grid-column: 3 / 4; grid-row: 3 / 4; }
+    .down { grid-column: 2 / 3; grid-row: 4 / 5; }
+    .volume { grid-column: 1 / 2; grid-row: 5 / 6; }
+    .set-ip { 
+      grid-column: 3 / 4; 
+      grid-row: 5 / 6; 
+      justify-self: end; 
+    }
+    .dialog {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      display: none;
+      z-index: 10;
+      text-align: center; /* 对话框内容居中 */
+    }
+    .dialog input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .dialog button {
+      background-color: #555;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    .dialog button:hover {
+      background-color: #777;
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 5;
+    }
+  </style>
+</head>
+<body>
+
+<div class="remote">
+  <button class="power" onclick="togglePower()">开关</button>
+  <button class="home" onclick="sendKey('home')">主页</button>
+  
+  <button class="up" onclick="sendKey('up')">↑</button>
+  <button class="left" onclick="sendKey('left')">←</button>
+  <button class="center" onclick="sendKey('enter')">确认</button>
+  <button class="right" onclick="sendKey('right')">→</button>
+  <button class="down" onclick="sendKey('down')">↓</button>
+  
+  <div class="volume">
+    <button style="width: 100%;" onclick="sendKey('volumeup')">音量+</button>
+    <button style="width: 100%; margin-top: 10px;" onclick="sendKey('volumedown')">音量-</button>
+  </div>
+  
+  <button class="set-ip" onclick="showDialog()">设置IP地址</button>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<div class="dialog" id="dialog">
+  <h3>请输入电视IP地址</h3>
+  <input type="text" id="ipInput" placeholder="例如：192.168.31.1">
+  <button onclick="setTVIP()">确定</button>
+</div>
+
+<script>
+  let tvIP = '';
+
+  function showDialog() {
+    document.getElementById('dialog').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
+  }
+
+  function setTVIP() {
+    tvIP = document.getElementById('ipInput').value.trim();
+    if (!tvIP) {
+      alert('请输入有效的IP地址');
+      return;
+    }
+    document.getElementById('dialog').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+    alert(`已设置电视IP地址为：${tvIP}`);
+  }
+
+  async function sendKey(keycode) {
+    if (!tvIP) {
+      alert('请先设置电视IP地址');
+      return;
+    }
+    sendCommand(`http://${tvIP}:6095/controller?action=keyevent&keycode=${keycode}`);
+  }
+
+  async function togglePower() {
+    if (!tvIP) {
+      alert('请先设置电视IP地址');
+      return;
+    }
+    sendCommand(`http://${tvIP}:6095/controller?action=keyevent&keycode=power`);
+  }
+
+  async function sendCommand(url) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        console.warn('请求可能失败，但已尝试发送命令');
+      }
+    } catch (error) {
+      console.error('网络请求失败，请检查网络或IP地址', error);
+    }
+  }
+</script>
+
+</body>
+</html>
