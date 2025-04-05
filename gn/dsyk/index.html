@@ -1,11 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>小米电视遥控器</title>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 <link rel="shortcut icon" href="../..//img/favicon.ico">
   <style>
     * {
@@ -133,7 +131,7 @@
 <div class="overlay" id="overlay"></div>
 <div class="dialog" id="dialog">
   <h3>请输入电视IP地址</h3>
-  <input type="text" id="ipInput" placeholder="例如：192.168.31.1">
+  <input type="text" id="ipInput" placeholder="例如：192.168.8.31">
   <button onclick="setTVIP()">确定</button>
 </div>
 
@@ -156,31 +154,35 @@
     alert(`已设置电视IP地址为：${tvIP}`);
   }
 
-  async function sendKey(keycode) {
+  function sendKey(keycode) {
     if (!tvIP) {
       alert('请先设置电视IP地址');
       return;
     }
-    sendCommand(`http://${tvIP}:6095/controller?action=keyevent&keycode=${keycode}`);
+    const url = `http://${tvIP}:6095/controller?action=keyevent&keycode=${keycode}`;
+    createIframe(url);
   }
 
-  async function togglePower() {
+  function togglePower() {
     if (!tvIP) {
       alert('请先设置电视IP地址');
       return;
     }
-    sendCommand(`http://${tvIP}:6095/controller?action=keyevent&keycode=power`);
+    const url = `http://${tvIP}:6095/controller?action=keyevent&keycode=power`;
+    createIframe(url);
   }
 
-  async function sendCommand(url) {
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        console.warn('请求可能失败，但已尝试发送命令');
-      }
-    } catch (error) {
-      console.error('网络请求失败，请检查网络或IP地址', error);
-    }
+  function createIframe(url) {
+    // 创建一个隐藏的 iframe
+    const iframe = document.createElement('iframe');
+    iframe.src = url;
+    iframe.style.display = 'none'; // 隐藏 iframe
+    document.body.appendChild(iframe);
+
+    // 定时移除 iframe（避免过多的 DOM 元素）
+    setTimeout(() => {
+      document.body.removeChild(iframe);
+    }, 1000); // 1秒后移除
   }
 </script>
 
