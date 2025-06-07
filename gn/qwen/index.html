@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Qwen</title>
-  <link rel="shortcut icon" href="../..//img/favicon.ico">
+  <title>AI 对话界面 - 折叠按钮修复版</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -55,16 +54,26 @@
 
     .ai-message pre {
       background-color: #2b2b2b;
-      color: #dcdcdc;
+      color: #00ff00;
       padding: 10px;
       overflow-x: auto;
       border-radius: 6px;
     }
 
     .ai-message code {
-      background-color: #eee;
+      background-color: #2b2b2b;
+      color: #00ff00;
       padding: 2px 4px;
       border-radius: 4px;
+    }
+
+    .toggle-btn {
+      display: inline-block;
+      margin-top: 10px;
+      cursor: pointer;
+      color: #0d6efd;
+      text-decoration: underline;
+      font-size: 14px;
     }
 
     .chat-input {
@@ -110,8 +119,9 @@
   </div>
 </div>
 
-<!-- 引入 marked.js -->
+<!-- 使用指定 marked.js -->
 <script src="https://js.cybozu.cn/markedjs/v0.3.5/marked.min.js"></script> 
+
 <script>
   const chatOutput = document.getElementById("chatOutput");
   const userInput = document.getElementById("userInput");
@@ -129,7 +139,33 @@
   }
 
   function cleanContent(content) {
-    return content.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+    return content.replace(/<think>[\s\S]*?<\/think>/ig, '').trim();
+  }
+
+  function addThinkingToggle(aiMsgDiv) {
+    const thinkRegex = /<think>([\s\S]*?)<\/think>/gi;
+
+    aiMsgDiv.innerHTML = aiMsgDiv.innerHTML.replace(thinkRegex, (match, p1) => {
+      return `
+        <div class="think-section">
+          <span class="toggle-btn">[+] 展开思考过程</span>
+          <div class="think-content" style="display:none;">
+            ${marked.parse(p1)}
+          </div>
+        </div>
+      `;
+    });
+
+    // 绑定点击事件
+    const toggleBtns = aiMsgDiv.querySelectorAll('.toggle-btn');
+    toggleBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const contentDiv = btn.nextElementSibling;
+        const isVisible = contentDiv.style.display !== 'none';
+        contentDiv.style.display = isVisible ? 'none' : 'block';
+        btn.textContent = isVisible ? '[-] 折叠思考过程' : '[+] 展开思考过程';
+      });
+    });
   }
 
   async function sendMessage() {
@@ -197,7 +233,9 @@
               const data = JSON.parse(jsonStr);
               const content = data.choices[0]?.delta?.content || '';
               fullResponse += content;
+
               aiMsgDiv.innerHTML = marked.parse(fullResponse);
+              addThinkingToggle(aiMsgDiv);
               chatOutput.scrollTop = chatOutput.scrollHeight;
             } catch (e) {
               console.warn('解析失败:', e);
@@ -212,6 +250,7 @@
           const content = data.choices[0]?.delta?.content || '';
           fullResponse += content;
           aiMsgDiv.innerHTML = marked.parse(fullResponse);
+          addThinkingToggle(aiMsgDiv);
         } catch (e) {
           console.warn('最终解析失败:', e);
         }
@@ -226,10 +265,8 @@
     isProcessing = false;
   }
 
-  // 使用事件监听器绑定按钮点击
   document.getElementById("sendBtn").addEventListener("click", sendMessage);
 
-  // 回车发送
   userInput.addEventListener("keydown", function(e) {
     if (e.key === "Enter") {
       sendMessage();
