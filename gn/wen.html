@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI对话界面 - 安卓4流式输出</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body, html {
+      height: 100%;
+      font-family: sans-serif;
+      background-color: #f4f6f9;
+    }
+
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 100%;
+      height: 100vh;
+      background-color: white;
+      overflow: hidden;
+    }
+
+    .chat-output {
+      flex-grow: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .message {
+      padding: 12px 16px;
+      border-radius: 20px;
+      max-width: 80%;
+      line-height: 1.5;
+      word-wrap: break-word;
+    }
+
+    .user-message {
+      align-self: flex-end;
+      background-color: #d1e7dd;
+      color: #115e59;
+    }
+
+    .ai-message {
+      align-self: flex-start;
+      background-color: #e2e3e5;
+      color: #383d41;
+    }
+
+    .chat-input {
+      display: flex;
+      padding: 15px;
+      border-top: 1px solid #ddd;
+      background-color: #fafafa;
+    }
+
+    .chat-input input {
+      flex-grow: 1;
+      padding: 12px 16px;
+      border: 1px solid #ccc;
+      border-radius: 25px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .chat-input button {
+      margin-left: 10px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 25px;
+      background-color: #0d6efd;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .chat-input button:focus {
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="chat-container">
+  <div class="chat-output" id="chatOutput"></div>
+
+  <div class="chat-input">
+    <input type="text" id="userInput" placeholder="输入你的问题..." />
+    <button id="sendBtn">发送</button>
+  </div>
+</div>
+
+<script>
+  var chatOutput = document.getElementById("chatOutput");
+  var userInput = document.getElementById("userInput");
+  var sendBtn = document.getElementById("sendBtn");
+
+  function addMessage(text, sender) {
+    var msgDiv = document.createElement("div");
+    msgDiv.className = "message " + (sender === "user" ? "user-message" : "ai-message");
+    msgDiv.textContent = text;
+    chatOutput.appendChild(msgDiv);
+    chatOutput.scrollTop = chatOutput.scrollHeight;
+    return msgDiv;
+  }
+
+  function sendMessage() {
+    try {
+      var text = userInput.value.trim();
+      if (!text) return;
+
+      addMessage(text, "user");
+      userInput.value = "";
+
+      var aiMsgDiv = addMessage("", "ai");
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'https://api.suanli.cn/v1/chat/completions',  true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('Authorization', 'Bearer sk-W0rpStc95T7JVYVwDYc29IyirjtpPPby6SozFMQr17m8KWeo');
+
+      var buffer = '';
+      var content = '';
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 3 || xhr.readyState === 4) {
+          try {
+            // 获取当前已收到的数据
+            var raw = xhr.responseText;
+
+            // 分行处理
+            var lines = (buffer + raw).split('\n');
+            buffer = lines.pop(); // 保留未完成的一行
+
+            for (var i = 0; i < lines.length; i++) {
+              var line = lines[i].trim();
+              if (line.indexOf('data:') === 0) {
+                var jsonStr = line.substring(5).trim();
+                if (jsonStr === '[DONE]') continue;
+
+                try {
+                  var data = JSON.parse(jsonStr);
+                  var chunk = data.choices && data.choices[0] && data.choices[0].delta && data.choices[0].delta.content
+                    ? data.choices[0].delta.content
+                    : '';
+                  content += chunk;
+                  aiMsgDiv.textContent = content;
+                  chatOutput.scrollTop = chatOutput.scrollHeight;
+                } catch (e) {}
+              }
+            }
+          } catch (e) {}
+        }
+
+        if (xhr.readyState === 4) {
+          if (xhr.status !== 200) {
+            aiMsgDiv.textContent = '请求失败，状态码：' + xhr.status;
+          }
+        }
+      };
+
+      xhr.onerror = function () {
+        aiMsgDiv.textContent = '网络请求出错，请检查网络连接。';
+      };
+
+      xhr.send(JSON.stringify({
+        model: "free:QwQ-32B",
+        messages: [{ role: "user", content: text }],
+        stream: true
+      }));
+
+    } catch (e) {
+      addMessage('发生错误：' + e.message, "ai");
+    }
+  }
+
+  // 绑定点击事件
+  if (sendBtn.addEventListener) {
+    sendBtn.addEventListener('click', sendMessage, false);
+  } else if (sendBtn.attachEvent) {
+    sendBtn.attachEvent('onclick', sendMessage);
+  }
+
+  // 回车键发送
+  userInput.onkeydown = function(e) {
+    var keyCode = e.which || e.keyCode;
+    if (keyCode === 13) {
+      sendMessage();
+    }
+  };
+</script>
+
+</body>
+</html>
