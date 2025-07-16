@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<!-- saved from url=(0046)file:///C:/Users/juncs/OneDrive/Desktop/1.html -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="applicable-device" content="pc,mobile">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>电子证书生成 - 齐鲁HAM</title>
+<meta name="robots" content="max-image-preview:large">
+	<style>img:is([sizes="auto" i], [sizes^="auto," i]) { contain-intrinsic-size: 3000px 1500px }</style>
+	<link rel="stylesheet" id="pb_animate-css" href=".//animate.css" type="text/css" media="all">
+<link rel="stylesheet" id="quiz-maker-css" href=".//quiz-maker-public.css" type="text/css" media="all">
+<link rel="stylesheet" id="ceoshop-css" href=".//ceoshop.css" type="text/css" media="all">
+<link rel="stylesheet" id="ladda-css" href=".//ladda-themeless.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="uikit-css" href=".//uikit.css" type="text/css" media="all">
+<link rel="stylesheet" id="diy-css" href=".//diy.css" type="text/css" media="all">
+<link rel="stylesheet" id="style-css" href=".//style.css" type="text/css" media="all">
+<link rel="stylesheet" id="fancybox-css" href=".//jquery.fancybox.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="tablepress-default-css" href=".//tablepress-combined.min.css" type="text/css" media="all">
+
+<link rel="canonical" href="https://qlham.com/caro">
+<!-- Analytics by WP Statistics - https://wp-statistics.com -->
+<link rel="stylesheet" href=".//font_4073586_5fq4g109min.css">
+<link rel="stylesheet" href=".//font-awesome.min.css">
+<link rel="shortcut icon" href="https://ham-1304391728.cos.ap-guangzhou.myqcloud.com/2025/07/686bbf43709177310.ico">
+<style type="text/css"></style><style id="theia-sticky-sidebar-stylesheet-TSS">.theiaStickySidebar:after {content: ""; display: table; clear: both;}</style></head>
+	<body>
+		<div id="ceotheme">
+			
+		    <style>
+        :root {
+    	--primary-color: #006fff;
+    	--shallow-color: rgb(0 87 255 / 10%);
+    }
+</style>			<main>
+<style>
+  body {
+    padding-top: 100px;
+    background-color: #ffffff;
+    font-family: Arial, sans-serif;
+  }
+
+  @media (max-width: 768px) {
+    body {
+      padding-top: 0;
+    }
+  }
+
+  .container {
+    background-color: white;
+    padding: 2em;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    max-width: 900px;
+    margin: 0 auto 20px auto;
+  }
+  label {
+    display: block;
+    margin: 10px 0 5px;
+  }
+  input, select {
+    padding: 5px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  button {
+    margin-top: 10px;
+    padding: 10px 20px;
+  }
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2em;
+  }
+  .form-col {
+    flex: 1 1 300px;
+    min-width: 250px;
+  }
+  #previewRow {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 30px;
+  }
+  #canvasBox {
+    text-align: left;
+    width: 100%;
+  }
+  #actionRow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1em;
+    gap: 0.5em;
+  }
+  canvas, img#certificateImage {
+    max-width: 100%;
+    border: 1px solid #ccc;
+  }
+  #applyBlend {
+    width: auto;
+    margin-right: 0.5em;
+  }
+  #mobileHint {
+    display: none;
+    color: #d00;
+    font-size: 13px;
+  }
+
+  header.navBar_01.ceo-visible\@s.top_box {
+    background-color: rgb(0, 111, 255) !important;
+  }
+</style>
+
+<main class="main ceo-background-default">
+  <section class="ceo-container container">
+    <h2 class="ceo-text-center">填写证书信息</h2>
+    <form id="certificateForm">
+      <div class="form-row">
+        <div class="form-col">
+          <label for="certNumber">编号：</label>
+          <input type="text" id="certNumber" name="certNumber" required="">
+          <label for="name">姓名：</label>
+          <input type="text" id="name" name="name" required="">
+          <label for="idNumber">证件号码：</label>
+          <input type="text" id="idNumber" name="idNumber" required="">
+          <label for="classType">操作类别：</label>
+          <select id="classType" name="classType">
+            <option value="A类">A 类</option>
+            <option value="B类">B 类</option>
+            <option value="C类">C 类</option>
+          </select>
+        </div>
+        <div class="form-col">
+          <label for="issueDate">发证日期：</label>
+          <input type="date" id="issueDate" name="issueDate" required="" max="2025-07-16">
+          <label for="authority">核发机构：</label>
+          <input type="text" id="authority" name="authority" required="">
+          <label for="origCertNumber">原操作证编号：（默认可不填）</label>
+          <input type="text" id="origCertNumber" name="origCertNumber" value="-">
+          <label for="origIssueDate">原发证日期：（默认可不填）</label>
+          <input type="date" id="origIssueDate" name="origIssueDate" max="2025-07-16">
+        </div>
+      </div>
+
+      <div id="previewRow">
+        <label for="photo">上传一寸照片：</label>
+        <input type="file" id="photo" name="photo" accept="image/jpeg,image/png">
+
+        <label style="font-size: 14px; margin-top: 0.5em;">
+          <input type="checkbox" id="applyBlend" checked="">
+          应用正片叠底效果（推荐）
+        </label>
+
+        <p style="font-size: 12px; color: #666; margin-top: 0.5em;">
+          照片要求：白底，支持 JPG/PNG，大小最好不超过 2MB。</p>
+         <p style="font-size: 12px; color: #666; margin-top: 0.5em;">
+          存储说明：本站仅用于电子证书生成使用，不存储任何个人信息。
+        </p>
+          <p style="text-align: center; color: red;">重要说明：仅提供预览功能，切勿作为非法用途！</p>
+
+        <div id="canvasBox">
+          <h3 style="text-align: center">电子证书预览</h3>
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <canvas id="certificateCanvas" width="512" height="324"></canvas>
+            <img id="certificateImage" alt="电子证书图片" style="margin-top: 1em; display: none;">
+            <div id="actionRow">
+              <button type="submit">生成证书</button>
+              <button id="downloadBtn" style="display: none;">下载电子证书</button>
+              <p id="mobileHint">当前浏览器不支持下载，请长按上方图片保存</p>
+              
+            </div>
+          </div>
+        </div>
+          <!-- 二维码区域 -->
+  <div style="margin: 40px auto; text-align: center;">
+    <div style="display: flex; justify-content: center; gap: 50px; flex-wrap: wrap;">
+      
+      
+       
+             
+    </div>
+  </div>
+    
+  </div></form></section>
+</main>
+
+<script>
+  const ceo_is_logged_in = true;
+  const today = new Date().toISOString().split("T")[0];
+  document.getElementById("issueDate").setAttribute("max", today);
+  document.getElementById("origIssueDate").setAttribute("max", today);
+
+  const form = document.getElementById("certificateForm");
+  const canvas = document.getElementById("certificateCanvas");
+  const imageOutput = document.getElementById("certificateImage");
+  const ctx = canvas.getContext("2d");
+  const background = new Image();
+  background.src = "https://ham-1304391728.cos.ap-guangzhou.myqcloud.com/2025/07/68664b9bba8a48190.jpg";
+  const downloadBtn = document.getElementById("downloadBtn");
+  const mobileHint = document.getElementById("mobileHint");
+
+  const mmToPx = mm => mm * (canvas.width / 85);
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "-";
+    const [y, m, d] = dateStr.split("-");
+    return `${y}年${m}月${d}日`;
+  };
+
+  const renderDefaultBackground = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+  };
+  background.onload = renderDefaultBackground;
+
+  const isDownloadSupported = () => {
+    const a = document.createElement("a");
+    return typeof a.download !== "undefined";
+  };
+
+  const showImageFromCanvas = () => {
+    const imageData = canvas.toDataURL("image/png");
+    imageOutput.src = imageData;
+    imageOutput.style.display = "block";
+    canvas.style.display = "none";
+
+    if (isDownloadSupported()) {
+      downloadBtn.style.display = "inline-block";
+      mobileHint.style.display = "none";
+      downloadBtn.onclick = () => {
+        const a = document.createElement("a");
+        a.href = imageData;
+        a.download = `HAM_电子证书_${Date.now()}.png`;
+        a.click();
+      };
+    } else {
+      downloadBtn.style.display = "none";
+      mobileHint.style.display = "block";
+    }
+  };
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    const photoFile = formData.get('photo');
+
+    const render = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+      ctx.font = "16px sans-serif";
+      ctx.fillStyle = "black";
+      ctx.fillText(data.certNumber, mmToPx(38), mmToPx(14.3));
+      ctx.fillText(data.name, mmToPx(19.5), mmToPx(19.5));
+      ctx.fillText(data.idNumber, mmToPx(19.5), mmToPx(25));
+      ctx.fillText(data.classType, mmToPx(19.5), mmToPx(30.5));
+      ctx.fillText(formatDate(data.issueDate), mmToPx(19.5), mmToPx(36));
+      ctx.fillText(data.authority, mmToPx(19.5), mmToPx(42));
+      ctx.font = "11px sans-serif";
+      const origLine = `原操作证号${data.origCertNumber || '-'} 原发证日期${formatDate(data.origIssueDate)}`;
+      ctx.fillText(origLine, mmToPx(7), mmToPx(47.8));
+      ctx.save();
+      ctx.font = "10px sans-serif";
+      ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+      ctx.textAlign = "left";
+      ctx.fillText("(若无此部分内容，可在相应位置填写“-”)", mmToPx(6.8), canvas.height - mmToPx(2.3));
+      ctx.restore();
+    };
+
+    const drawPhoto = (img) => {
+      const photoWidthPx = mmToPx(25);
+      const photoHeightPx = mmToPx(34.5);
+      const x = canvas.width - mmToPx(4) - photoWidthPx;
+      const y = canvas.height - mmToPx(6) - photoHeightPx;
+      const useBlend = document.getElementById("applyBlend").checked;
+      ctx.save();
+      ctx.globalAlpha = 1.0;
+      if (useBlend) ctx.globalCompositeOperation = "multiply";
+      ctx.drawImage(img, x, y, photoWidthPx, photoHeightPx);
+      ctx.restore();
+    };
+
+    if (photoFile && photoFile.size > 0) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const photo = new Image();
+        photo.onload = function() {
+          render();
+          drawPhoto(photo);
+          showImageFromCanvas();
+        };
+        photo.src = event.target.result;
+      };
+      reader.readAsDataURL(photoFile);
+    } else {
+      render();
+      showImageFromCanvas();
+    }
+  });
+</script>
+
+		</main>
+               
+
+</body></html>
