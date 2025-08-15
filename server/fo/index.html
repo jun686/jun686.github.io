@@ -177,12 +177,11 @@
 
         // 根据状态显示内容
         if (item.status === 0) {
-          // ✅ 仅显示“未丢失” + 留言（如果有）
           content += `<p class="status-found">✅ 物品状态：未丢失</p>`;
-          content += messageBlock(item.message); // 留言是唯一例外
+          content += infoRow('🎒', '物品名称', item.item);
+          content += messageBlock(item.message);
         } 
         else if (item.status === 1) {
-          // ✅ 状态为“已丢失”：显示全部信息
           content += `<p class="status-lost">⚠️ 物品状态：已丢失</p>`;
           content += infoRow('🎒', '物品名称', item.item);
           content += infoRow('👤', '姓名', item.name);
