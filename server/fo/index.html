@@ -175,28 +175,32 @@
 
         let content = '';
 
-        // 显示状态
+        // 根据状态显示内容
         if (item.status === 0) {
+          // ✅ 仅显示“未丢失” + 留言（如果有）
           content += `<p class="status-found">✅ 物品状态：未丢失</p>`;
-        } else if (item.status === 1) {
+          content += messageBlock(item.message); // 留言是唯一例外
+        } 
+        else if (item.status === 1) {
+          // ✅ 状态为“已丢失”：显示全部信息
           content += `<p class="status-lost">⚠️ 物品状态：已丢失</p>`;
-        } else {
+          content += infoRow('🎒', '物品名称', item.item);
+          content += infoRow('👤', '姓名', item.name);
+          content += infoRow('📞', '电话', item.phone, 'tel:');
+          content += infoRow('🏫', '班级', item.class);
+          content += infoRow('🏠', '地址', item.address);
+          content += infoRow('🔹', 'QQ', item.qq);
+          content += infoRow('📱', '微信', item.wechat);
+          content += infoRow('✉️', '邮箱', item.email, 'mailto:');
+          content += infoRow('📅', '丢失时间', item.date);
+          content += messageBlock(item.message);
+        } 
+        else {
           resultDiv.innerHTML = `<div class="error">数据错误</div>`;
           return;
         }
 
-        // 按顺序添加信息
-        content += infoRow('🎒', '物品名称', item.item);
-        content += infoRow('👤', '姓名', item.name);
-        content += infoRow('📞', '电话', item.phone, 'tel:');
-        content += infoRow('🏫', '班级', item.class);
-        content += infoRow('🏠', '地址', item.address);
-        content += infoRow('🔹', 'QQ', item.qq);
-        content += infoRow('📱', '微信', item.wechat); // 仅显示，不加链接
-        content += infoRow('✉️', '邮箱', item.email, 'mailto:');
-        content += infoRow('📅', '丢失时间', item.date);
-        content += messageBlock(item.message);
-
+        // 防空
         if (content === '') {
           content = `<div class="error">暂无信息</div>`;
         }
