@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="shortcut icon" href="../..//img/favicon.ico">
+  <title>Find Owner</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #333;
+    }
+    .container {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 500px;
+      padding: 30px;
+      text-align: center;
+    }
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 16px;
+      font-size: 28px;
+    }
+    .status-lost {
+      color: #d63031;
+      font-weight: bold;
+      font-size: 20px;
+    }
+    .status-found {
+      color: #00b894;
+      font-weight: bold;
+      font-size: 20px;
+    }
+    .info-item {
+      margin: 14px 0;
+      font-size: 17px;
+      line-height: 1.6;
+      text-align: left;
+    }
+    .label {
+      font-weight: bold;
+      color: #2980b9;
+    }
+    .value {
+      color: #2c3e50;
+    }
+    .icon {
+      margin-right: 8px;
+    }
+    .loading {
+      color: #6c757d;
+      font-style: italic;
+    }
+    .error {
+      color: #c0392b;
+      font-size: 16px;
+      line-height: 1.6;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      margin: 10px 0;
+    }
+    .message-box {
+      background-color: #f1f8ff;
+      border-left: 4px solid #2980b9;
+      padding: 12px;
+      margin: 18px 0;
+      font-style: italic;
+      color: #34495e;
+      font-size: 15px;
+      border-radius: 6px;
+    }
+    footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #7f8c8d;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔔 Find Owner</h1>
+
+    <div id="result">
+      <p class="loading">加载中...</p>
+    </div>
+
+    <footer>
+      &copy; 2025 物品防丢系统 | 请尊重他人隐私
+    </footer>
+  </div>
+
+  <script>
+    function getUrlId() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('id');
+    }
+
+    // 判断字段是否存在且非空（字符串去空格后非空，或非 null/undefined）
+    function hasValue(val) {
+      return val !== null && val !== undefined &&
+             typeof val === 'string' &&
+             val.trim() !== '';
+    }
+
+    // 安全转义 HTML
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // 生成信息行（仅当值存在时）
+    function infoRow(icon, label, value) {
+      return hasValue(value)
+        ? `<div class="info-item">
+             <span class="icon">${icon}</span>
+             <span class="label">${label}：</span>
+             <span class="value">${escapeHtml(value)}</span>
+           </div>`
+        : '';
+    }
+
+    // 生成留言块（仅当 message 存在）
+    function messageBlock(msg) {
+      return hasValue(msg)
+        ? `<div class="info-item">
+             <div class="message-box">
+               <strong>📝 主人留言：</strong>
+               ${escapeHtml(msg.trim())}
+             </div>
+           </div>`
+        : '';
+    }
+
+    async function fetchAndDisplay() {
+      const itemId = getUrlId();
+      const resultDiv = document.getElementById('result');
+
+      if (!itemId) {
+        resultDiv.innerHTML = `<div class="error">🔍 未找到该物品</div>`;
+        return;
+      }
+
+      try {
+        const response = await fetch('state.json?' + new Date().getTime());
+        if (!response.ok) throw new Error('加载失败');
+
+        const data = await response.json();
+        const item = data.find(d => d.id === itemId);
+
+        if (!item) {
+          resultDiv.innerHTML = `<div class="error">🔍 未找到该物品</div>`;
+          return;
+        }
+
+        // 动态构建内容：只显示存在的字段
+        let content = '';
+
+        // 显示状态
+        if (item.status === 0) {
+          content += `<p class="status-found">✅ 物品状态：未丢失</p>`;
+        } else if (item.status === 1) {
+          content += `<p class="status-lost">⚠️ 物品状态：已丢失</p>`;
+        } else {
+          resultDiv.innerHTML = `<div class="error">数据错误</div>`;
+          return;
+        }
+
+        // 添加编号（总是显示）
+        content += infoRow('🆔', '物品编号', item.id);
+
+        // 条件性添加其他字段
+        content += infoRow('🎒', '物品名称', item.item);
+        content += infoRow('📅', '丢失日期', item.date);
+        content += infoRow('👤', '姓名', item.name);
+        content += infoRow('📞', '电话', item.phone);
+        content += infoRow('🏫', '班级', item.class);
+
+        // 添加留言（如果存在）
+        content += messageBlock(item.message);
+
+        // 如果没有任何信息（极少见），提示
+        if (!content) {
+          content = `<div class="error">暂无信息</div>`;
+        }
+
+        resultDiv.innerHTML = content;
+      } catch (err) {
+        resultDiv.innerHTML = `<div class="error">⚠️ 加载失败</div>`;
+      }
+    }
+
+    window.onload = fetchAndDisplay;
+  </script>
+</body>
+</html>
