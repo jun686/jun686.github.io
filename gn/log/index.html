@@ -406,12 +406,12 @@
                         <input type="text" id="their-report" placeholder="例如: 59">
                     </div>
                     <div class="form-group">
-                        <label for="my-power">我方功率 (W 或 H/M/L)</label>
+                        <label for="my-power">我方功率 (H/M/L)</label>
                         <input type="text" id="my-power" placeholder="例如: 100 或 H">
                         <div class="bubbles-container" id="my-power-bubbles"></div>
                     </div>
                     <div class="form-group">
-                        <label for="power">对方功率 (W 或 H/M/L)</label>
+                        <label for="power">对方功率 (H/M/L)</label>
                         <input type="text" id="power" placeholder="例如: 50 或 M">
                         <div class="bubbles-container" id="power-bubbles"></div>
                     </div>
@@ -473,12 +473,6 @@
                 </div>
             </div>
         </div>
-        <!-- QRZ Page -->
-        <div id="qrz-page" class="page">
-            <div class="qrz-container">
-                <iframe src="https://logbook.qrz.com/logbook#" class="qrz-frame" title="QRZ Website"></iframe>
-            </div>
-        </div>
     </div>
     <!-- Fixed Footer -->
     <div class="fixed-footer">
@@ -504,7 +498,7 @@
         // DOM Elements
         const logFormPage = document.getElementById('log-form-page');
         const logsPage = document.getElementById('logs-page');
-        const qrzPage = document.getElementById('qrz-page');
+
         const logFormBtn = document.getElementById('log-form-btn');
         const logsBtn = document.getElementById('logs-btn');
         const qrzBtn = document.getElementById('qrz-btn');
@@ -636,7 +630,9 @@
         // Navigation
         logFormBtn.addEventListener('click', () => showPage('log-form-page'));
         logsBtn.addEventListener('click', () => showPage('logs-page'));
-        qrzBtn.addEventListener('click', () => showPage('qrz-page'));
+        qrzBtn.addEventListener('click', () => {
+              window.open('https://logbook.qrz.com/#', '_blank');
+        });
 
         // Edit log
         function editLog(logId) {
