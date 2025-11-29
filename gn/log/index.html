@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -24,12 +23,14 @@
             --bubble-bg: rgba(255, 255, 255, 0.1);
             --bubble-hover: rgba(10, 102, 194, 0.3);
         }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         body {
             background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             color: var(--light);
@@ -37,6 +38,7 @@
             padding-bottom: 80px;
             position: relative;
         }
+
         h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
@@ -45,10 +47,12 @@
             -webkit-text-fill-color: transparent;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
+
         .subtitle {
             color: rgba(255, 255, 255, 0.7);
             font-size: 1.1rem;
         }
+
         .container {
             text-align: center;
             padding: 20px 0;
@@ -59,12 +63,15 @@
             padding: 0 20px;
             padding-top: 30px;
         }
+
         .page {
             display: none;
         }
+
         .page.active {
             display: block;
         }
+
         .form-container, .settings-container {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
@@ -74,22 +81,26 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border);
         }
+
         .form-grid, .settings-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-bottom: 20px;
         }
+
         .form-group, .setting-group {
             position: relative;
         }
+
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
             color: #e0e0e0;
         }
-        input[type="text"], input[type="number"], input[type="datetime-local"], textarea, select {
+
+        input[type="text"], input[type="number"], input[type="datetime-local"], textarea, select, input[type="date"] {
             width: 100%;
             padding: 12px 15px;
             border-radius: 8px;
@@ -99,15 +110,18 @@
             font-size: 1rem;
             transition: all 0.3s ease;
         }
+
         textarea {
             min-height: 80px;
             resize: vertical;
         }
+
         input:focus, textarea:focus, select:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 2px rgba(10, 102, 194, 0.3);
         }
+
         .btn-group {
             display: flex;
             justify-content: center;
@@ -115,6 +129,7 @@
             flex-wrap: wrap;
             margin-top: 15px;
         }
+
         button {
             padding: 12px 24px;
             border: none;
@@ -126,43 +141,53 @@
             align-items: center;
             gap: 8px;
         }
+
         .btn-primary {
             background: var(--primary);
             color: white;
         }
+
         .btn-primary:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
         }
+
         .btn-secondary {
             background: rgba(255, 255, 255, 0.1);
             color: white;
         }
+
         .btn-secondary:hover {
             background: rgba(255, 255, 255, 0.2);
         }
+
         .btn-warning {
             background: var(--warning);
             color: #333;
         }
+
         .btn-warning:hover {
             background: #f8c800;
         }
+
         .btn-danger {
             background: var(--error);
             color: white;
         }
+
         .btn-danger:hover {
             background: #d32f2f;
         }
+
         .bubbles-container {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
+            justify-content: flex-start;
             gap: 8px;
             margin-top: 10px;
             padding: 10px 0;
         }
+
         .bubble {
             padding: 6px 12px;
             background: var(--bubble-bg);
@@ -172,32 +197,56 @@
             font-size: 0.9rem;
             white-space: nowrap;
         }
+
         .bubble:hover {
             background: var(--bubble-hover);
             transform: translateY(-2px);
         }
+
         .bubble.active {
             background: var(--primary);
             box-shadow: 0 2px 8px rgba(10, 102, 194, 0.5);
         }
+
+        /* ---------------------------------- */
+        /* Logs Page Header Changes for Search */
+        /* ---------------------------------- */
         .logs-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: block; 
             margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 1px solid var(--border);
         }
+        
+        .logs-title-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .search-container {
+            margin-bottom: 15px; 
+            display: block; /* 恢复为普通块级元素 */
+        }
+        
+        /* 删除了 .date-search-group 相关的样式 */
+        
         .logs-actions {
             display: flex;
             gap: 10px;
         }
+        /* ---------------------------------- */
+
+
         .logs-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
             gap: 20px;
             margin-top: 10px;
         }
+
         .log-card {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
@@ -208,42 +257,50 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
         }
+
         .log-card:hover:not(.expanded) {
             transform: translateY(-5px);
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
+
         .log-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
+
         .frequency {
             font-size: 1.2rem;
             font-weight: 700;
             color: #4facfe;
         }
+
         .mode {
             font-size: 1rem;
             color: #a0a0a0;
         }
+
         .callsign {
             font-size: 1.6rem;
             font-weight: 800;
             margin: 8px 0;
             color: white;
         }
+
         .log-time {
             font-size: 1rem;
             color: #a0a0a0;
             margin-bottom: 10px;
         }
+
         .log-notes {
             margin: 8px 0;
             font-size: 0.95rem;
             color: #ddd;
             padding: 6px 0;
         }
+
         .log-details {
             display: none;
             grid-template-columns: 1fr 1fr;
@@ -252,41 +309,50 @@
             padding-top: 10px;
             border-top: 1px solid var(--border);
         }
+
         .detail-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
         }
+
         .detail-label {
             font-size: 0.85rem;
             color: #a0a0a0;
             margin-bottom: 4px;
         }
+
         .detail-value {
             font-weight: 600;
             color: white;
         }
+
         .log-actions {
             display: flex;
             justify-content: center;
             gap: 8px;
             margin-top: 15px;
             width: 100%;
+            grid-column: span 2; 
         }
+
         .empty-state {
             text-align: center;
             padding: 40px;
             color: rgba(255, 255, 255, 0.5);
         }
+
         .empty-state i {
             font-size: 3rem;
             margin-bottom: 20px;
             color: rgba(255, 255, 255, 0.2);
         }
+
         .file-input {
             display: none;
         }
+
         .file-label {
             background: var(--secondary);
             padding: 10px 15px;
@@ -297,25 +363,30 @@
             gap: 8px;
             transition: background 0.3s;
         }
+
         .file-label:hover {
             background: #333;
         }
+
         .import-status {
             margin-top: 15px;
             padding: 10px;
             border-radius: 8px;
             display: none;
         }
+
         .import-success {
             background: rgba(52, 168, 83, 0.2);
             color: #a7e0b8;
             border: 1px solid rgba(52, 168, 83, 0.3);
         }
+
         .import-warning {
             background: rgba(251, 188, 5, 0.2);
             color: #fdd87a;
             border: 1px solid rgba(251, 188, 5, 0.3);
         }
+
         .fixed-footer {
             position: fixed;
             bottom: 0;
@@ -331,6 +402,7 @@
             z-index: 1000;
             flex-wrap: nowrap;
         }
+
         .nav-btn {
             background: rgba(255, 255, 255, 0.08);
             color: white;
@@ -344,14 +416,17 @@
             white-space: nowrap;
             min-width: 0;
         }
+
         .nav-btn.active {
             background: var(--primary);
             box-shadow: 0 4px 20px rgba(10, 102, 194, 0.4);
         }
+
         @media (max-width: 425px) {
             .nav-btn span {
                 display: none;
             }
+
             .nav-btn {
                 padding: 10px;
                 width: auto;
@@ -360,6 +435,18 @@
                 gap: 0;
             }
         }
+        
+        @media (max-width: 600px) {
+            .logs-actions {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .file-label, .btn-primary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
         .editable-list {
             display: flex;
             flex-wrap: wrap;
@@ -368,6 +455,7 @@
             margin-top: 6px;
             margin-bottom: 8px;
         }
+
         .editable-item {
             background: var(--bubble-bg);
             padding: 4px 10px;
@@ -376,21 +464,23 @@
             align-items: center;
             gap: 6px;
         }
+
         .editable-item .remove-btn {
             color: var(--error);
             cursor: pointer;
             font-size: 0.8rem;
         }
+
         .editable-item .remove-btn:hover {
             color: #ff6b6b;
         }
-        .settings-container .setting-group label,
-        .settings-container h3,
-        .settings-container .editable-section label {
+
+        .settings-container .setting-group label, .settings-container h3, .settings-container .editable-section label {
             text-align: left;
             display: block;
             margin-left: 0;
         }
+
         .editable-section {
             display: flex;
             flex-direction: row;
@@ -399,11 +489,13 @@
             margin: 12px 0;
             flex-wrap: wrap;
         }
+
         .editable-section input[type="text"] {
             flex: 1;
             min-width: 180px;
             max-width: 250px;
         }
+
         .editable-section button {
             margin-top: 0;
             padding: 8px 12px;
@@ -414,7 +506,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- Log Form Page -->
         <div id="log-form-page" class="page active">
             <div class="form-container">
                 <div class="form-grid">
@@ -489,20 +580,28 @@
                 </div>
             </div>
         </div>
-        <!-- Logs Page -->
+
         <div id="logs-page" class="page">
             <div class="logs-header">
-                <h2 id="logs-title">0 条记录</h2>
-                <div class="logs-actions">
-                    <label class="file-label">
-                        <i class="fas fa-file-import"></i> <span>导入 ADI</span>
-                        <input type="file" id="import-adi" class="file-input" accept=".adi,.ADI">
-                    </label>
-                    <button class="btn-primary" id="export-adi">
-                        <i class="fas fa-file-export"></i> <span>导出 ADI</span>
-                    </button>
+                <div class="search-container">
+                    <input type="text" id="log-search" placeholder="搜索" style="width: 100%; padding: 12px 15px; border-radius: 8px; border: 1px solid var(--border); background: rgba(0, 0, 0, 0.2); color: white; font-size: 1rem;">
+                    
+                    </div>
+                
+                <div class="logs-title-actions">
+                    <h2 id="logs-title">0 条记录</h2>
+                    <div class="logs-actions">
+                        <label class="file-label">
+                            <i class="fas fa-file-import"></i> <span>导入 ADI</span>
+                            <input type="file" id="import-adi" class="file-input" accept=".adi,.ADI">
+                        </label>
+                        <button class="btn-primary" id="export-adi">
+                            <i class="fas fa-file-export"></i> <span>导出 ADI</span>
+                        </button>
+                    </div>
                 </div>
             </div>
+            
             <div class="import-status" id="import-status"></div>
             <div class="logs-container" id="logs-container">
                 <div class="empty-state">
@@ -512,13 +611,19 @@
                 </div>
             </div>
         </div>
-        <!-- Settings Page -->
+
         <div id="settings-page" class="page">
             <div class="settings-container">
                 <div class="setting-group">
                     <label for="my-callsign">我的呼号</label>
                     <input type="text" id="my-callsign" placeholder="例如: BA1ABC">
                 </div>
+                
+                <div class="setting-group" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-bottom: 5px;">
+                    <label for="utc-plus8-toggle" style="margin-bottom: 0;">显示 UTC+8 (北京时间)</label>
+                    <input type="checkbox" id="utc-plus8-toggle" style="width: auto; margin: 0; transform: scale(1.5);">
+                </div>
+
                 <h3 style="text-align: left; margin: 20px 0 10px;">快捷填充内容管理</h3>
                 <div class="editable-section">
                     <label>频率 (MHz)</label>
@@ -558,7 +663,7 @@
             </div>
         </div>
     </div>
-    <!-- Fixed Footer -->
+
     <div class="fixed-footer">
         <button class="nav-btn active" id="log-form-btn">
             <i class="fas fa-edit"></i> <span>填写记录</span>
@@ -573,16 +678,20 @@
             <i class="fas fa-globe"></i> <span>QRZ 网站</span>
         </button>
     </div>
+
     <script>
         const DEFAULT_CONFIG = {
             frequencies: ['438.5', '439.8875', '439.95', '439.6', '438.85', '439.875', '439.8', '14.270', '28.500', '50.110'],
             modes: ['SSB', 'CW', 'FT8', 'FM', 'AM'],
             equipment: ['UVK6', 'UVK5', 'UV5R', 'TK11', '5Rmini', 'SHX8800', 'SHX8600', '八重洲FT991', '八重洲300D', '即时通D9000'],
             antennas: ['原装', '八木', '拉杆', 'MA01', '正V'],
-            power: ['1', '3', '5', '8', '15', '25', '50', 'H', 'M', 'L']
+            power: ['1', '3', '5', '8', '15', '25', '50', 'H', 'M', 'L'],
+            useUTCPlus8: false 
         };
+
         let CONFIG = JSON.parse(localStorage.getItem('config')) || { ...DEFAULT_CONFIG };
         let MY_CALLSIGN = localStorage.getItem('myCallsign') || '';
+
         const logFormPage = document.getElementById('log-form-page');
         const logsPage = document.getElementById('logs-page');
         const settingsPage = document.getElementById('settings-page');
@@ -600,23 +709,115 @@
         const exportAdiBtn = document.getElementById('export-adi');
         const importStatus = document.getElementById('import-status');
         const logsTitle = document.getElementById('logs-title');
+        const logSearchInput = document.getElementById('log-search');
+        
+        const utcPlus8Toggle = document.getElementById('utc-plus8-toggle');
+
         let logs = JSON.parse(localStorage.getItem('hamLogs')) || [];
         let currentEditId = null;
 
-        function refreshUTCTime() {
-            const now = new Date();
-            const year = now.getUTCFullYear();
-            const month = String(now.getUTCMonth() + 1).padStart(2, '0');
-            const day = String(now.getUTCDate()).padStart(2, '0');
-            const hours = String(now.getUTCHours()).padStart(2, '0');
-            const minutes = String(now.getUTCMinutes()).padStart(2, '0');
-            utcTimeInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+        // 【新增辅助函数：安全解析 YYYY-MM-DDTHH:MM 字符串】
+        function parseUtcStringToDateParts(utcTimeStr) {
+            // 确保格式为 YYYY-MM-DDTHH:MM
+            const match = utcTimeStr.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/);
+            if (!match) return null;
+
+            return {
+                year: parseInt(match[1]),
+                month: parseInt(match[2]), // 1-12
+                day: parseInt(match[3]),
+                hours: parseInt(match[4]),
+                minutes: parseInt(match[5])
+            };
         }
 
-        function formatLogTime(utcTimeStr) {
-            const date = new Date(utcTimeStr);
-            return date.toLocaleDateString('zh-CN') + ' ' + date.toTimeString().substring(0, 5) + ' UTC';
+        // 【修改 1：重写 refreshUTCTime 以准确填充当前时间】
+        function refreshUTCTime() {
+            const now = new Date();
+            let year, month, day, hours, minutes;
+            let suffix = ' UTC';
+
+            // 总是先获取当前 UTC 时间
+            let utcHours = now.getUTCHours();
+            let utcMinutes = now.getUTCMinutes();
+            let utcDay = now.getUTCDate();
+            let utcMonth = now.getUTCMonth() + 1; // 1-12
+            let utcYear = now.getUTCFullYear();
+
+            if (CONFIG.useUTCPlus8) {
+                // 如果需要显示 UTC+8，则在 UTC 的基础上进行偏移计算
+                let totalMinutes = utcHours * 60 + utcMinutes + (8 * 60);
+                
+                hours = Math.floor(totalMinutes / 60) % 24;
+                minutes = totalMinutes % 60;
+                
+                let dayOffset = Math.floor(totalMinutes / (24 * 60)); // 0, 1, -1, etc.
+                
+                // 使用 Date 对象进行日期偏移计算（避免手动处理月份和年份跨界）
+                const tempDate = new Date(Date.UTC(utcYear, utcMonth - 1, utcDay + dayOffset, hours, minutes));
+                
+                year = tempDate.getUTCFullYear();
+                month = tempDate.getUTCMonth() + 1;
+                day = tempDate.getUTCDate();
+
+                hours = tempDate.getUTCHours(); // 重新获取，因为 tempDate 是在 UTC 上创建的
+                minutes = tempDate.getUTCMinutes();
+                
+                suffix = ' UTC+8';
+
+            } else {
+                // 仅显示 UTC 时间
+                year = utcYear;
+                month = utcMonth;
+                day = utcDay;
+                hours = utcHours;
+                minutes = utcMinutes;
+            }
+
+            const formattedTime = `${String(year).padStart(4, '0')}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}T${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+            
+            utcTimeInput.value = formattedTime;
+
+            const label = document.querySelector('label[for="utc-time"]');
+            label.textContent = `通联时间 (${suffix})`; 
         }
+
+        // 【修改 2：核心时间显示逻辑 formatLogTime】
+        function formatLogTime(utcTimeStr) {
+            const parts = parseUtcStringToDateParts(utcTimeStr);
+            if (!parts) return `Invalid Time (${utcTimeStr})`;
+
+            let { year, month, day, hours, minutes } = parts;
+            let suffix = ' UTC';
+
+            if (CONFIG.useUTCPlus8) {
+                // 手动进行 UTC+8 偏移计算
+                let totalMinutes = hours * 60 + minutes + (8 * 60);
+                
+                hours = Math.floor(totalMinutes / 60) % 24;
+                minutes = totalMinutes % 60;
+                
+                let dayOffset = Math.floor(totalMinutes / (24 * 60));
+
+                // 使用 Date.UTC 来处理日期/月份/年份的跨越
+                const tempDate = new Date(Date.UTC(year, month - 1, day + dayOffset, hours, minutes));
+                
+                year = tempDate.getUTCFullYear();
+                month = tempDate.getUTCMonth() + 1; // 1-12
+                day = tempDate.getUTCDate();
+                hours = tempDate.getUTCHours();
+                minutes = tempDate.getUTCMinutes();
+                
+                suffix = ' UTC+8';
+            }
+            
+            // 格式化输出
+            const dateStr = `${String(year).padStart(4, '0')}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const timeStr = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+            
+            return `${dateStr} ${timeStr} ${suffix}`;
+        }
+
 
         function getCallSignFromStorage() {
             return MY_CALLSIGN || 'YOUR_CALLSIGN';
@@ -627,11 +828,14 @@
         createBubbles();
         clearForm();
         loadSettings();
+        
+        if (logSearchInput) logSearchInput.addEventListener('input', () => renderLogs());
 
         function syncInputWithBubbles(inputId, containerId, items) {
             const input = document.getElementById(inputId);
             const container = document.getElementById(containerId);
             if (!input || !container) return;
+
             input.addEventListener('input', () => {
                 const inputValue = input.value.trim();
                 container.querySelectorAll('.bubble').forEach(b => b.classList.remove('active'));
@@ -673,10 +877,12 @@
                     bubble.addEventListener('click', () => {
                         document.getElementById(inputId).value = item;
                         setActiveBubble(container, bubble);
+                        document.getElementById(inputId).dispatchEvent(new Event('input')); 
                     });
                     container.appendChild(bubble);
                 });
             };
+
             createBubblesFor('freq-bubbles', CONFIG.frequencies, 'frequency');
             createBubblesFor('mode-bubbles', CONFIG.modes, 'mode');
             createBubblesFor('power-bubbles', CONFIG.power, 'power');
@@ -714,7 +920,16 @@
             refreshUTCTime();
             showPage('log-form-page');
         });
-        logsBtn.addEventListener('click', () => showPage('logs-page'));
+        
+        logsBtn.addEventListener('click', () => {
+            // 清除搜索框内容
+            if (logSearchInput.value.trim() !== '') {
+                logSearchInput.value = '';
+                renderLogs(); 
+            }
+            showPage('logs-page');
+        });
+
         settingsBtn.addEventListener('click', () => {
             loadSettings();
             showPage('settings-page');
@@ -726,10 +941,16 @@
         function editLog(logId) {
             const log = logs.find(l => l.id === logId);
             if (!log) return;
+
             document.getElementById('callsign').value = log.callsign;
             document.getElementById('frequency').value = log.frequency;
             document.getElementById('mode').value = log.mode;
-            document.getElementById('utc-time').value = log.utcTime;
+            
+            // 将存储的 UTC 时间字符串放入 datetime-local 输入框
+            document.getElementById('utc-time').value = log.utcTime; 
+            
+            refreshUTCTime(); // 刷新标签显示，但输入框值不变
+
             document.getElementById('my-report').value = log.myReport;
             document.getElementById('their-report').value = log.theirReport;
             document.getElementById('my-power').value = log.myPower || '';
@@ -738,6 +959,7 @@
             document.getElementById('antenna').value = log.antenna || '';
             document.getElementById('qth').value = log.qth || '';
             document.getElementById('notes').value = log.notes || '';
+
             currentEditId = logId;
             addLogBtn.style.display = 'none';
             updateLogBtn.style.display = 'inline-flex';
@@ -745,26 +967,55 @@
             showPage('log-form-page');
         }
 
-        // ✅ 修改：使用 renderLogs(scrollToId)
-        function renderLogs(scrollToId = null) {
-            logs.sort((a, b) => new Date(b.utcTime) - new Date(a.utcTime));
-            localStorage.setItem('hamLogs', JSON.stringify(logs));
-            logsTitle.textContent = `${logs.length} 条记录`;
 
-            if (logs.length === 0) {
+        function renderLogs(scrollToId = null) {
+            // 使用自定义的日期解析进行排序
+            logs.sort((a, b) => {
+                const dateA = new Date(a.utcTime.replace('T', ' ') + ' UTC');
+                const dateB = new Date(b.utcTime.replace('T', ' ') + ' UTC');
+                return dateB - dateA;
+            });
+            localStorage.setItem('hamLogs', JSON.stringify(logs));
+
+            const searchTerm = logSearchInput ? logSearchInput.value.toLowerCase().trim() : '';
+            
+            let filteredLogs = logs;
+
+            if (searchTerm) {
+                filteredLogs = filteredLogs.filter(log => {
+                    const searchFields = [
+                        log.callsign,
+                        log.frequency,
+                        log.mode,
+                        log.equipment, 
+                        log.antenna,   
+                        log.qth,       
+                        log.notes,
+                        log.utcTime 
+                    ].map(field => field ? String(field).toLowerCase() : '');
+
+                    return searchFields.some(field => field.includes(searchTerm));
+                });
+            }
+
+
+            logsTitle.textContent = `${filteredLogs.length} 条 (共 ${logs.length} 条)`; 
+
+            if (filteredLogs.length === 0) {
                 logsContainer.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-satellite-dish"></i>
-                        <h3>暂无通联记录</h3>
-                        <p>添加您的第一次通联记录吧！</p>
+                        <h3>${searchTerm ? '未找到匹配的记录' : '暂无通联记录'}</h3>
+                        <p>${searchTerm ? '请尝试不同的搜索关键词' : '添加您的第一次通联记录吧！'}</p>
                     </div>
                 `;
                 return;
             }
 
             logsContainer.innerHTML = '';
-            logs.forEach(log => {
-                const formattedDate = formatLogTime(log.utcTime);
+            
+            filteredLogs.forEach(log => {
+                const formattedDate = formatLogTime(log.utcTime); 
                 const hasNotes = !!log.notes;
                 const logCard = document.createElement('div');
                 logCard.className = 'log-card';
@@ -816,6 +1067,7 @@
                         </div>
                     </div>
                 `;
+
                 const details = logCard.querySelector('.log-details');
                 logCard.addEventListener('click', (e) => {
                     if (e.target.closest('.log-actions button')) return;
@@ -830,15 +1082,11 @@
                 logsContainer.appendChild(logCard);
             });
 
-            // ✅ 新增：滚动到指定卡片
             if (scrollToId !== null) {
                 setTimeout(() => {
                     const targetCard = document.getElementById(`log-${scrollToId}`);
                     if (targetCard) {
-                        window.scrollTo({
-                            top: targetCard.offsetTop - 20,
-                            behavior: 'smooth'
-                        });
+                        window.scrollTo({ top: targetCard.offsetTop - 20, behavior: 'smooth' });
                     }
                 }, 50);
             }
@@ -855,10 +1103,12 @@
 
         updateLogBtn.addEventListener('click', () => {
             if (!currentEditId) return;
+
             const callsign = document.getElementById('callsign').value.trim();
             const frequency = document.getElementById('frequency').value.trim();
             const mode = document.getElementById('mode').value.trim();
-            const utcTime = document.getElementById('utc-time').value;
+            // 存储为 YYYY-MM-DDTHH:MM 格式的 UTC 时间
+            const utcTime = document.getElementById('utc-time').value; 
             const myReport = document.getElementById('my-report').value.trim();
             const theirReport = document.getElementById('their-report').value.trim();
             const myPower = document.getElementById('my-power').value.trim();
@@ -867,10 +1117,12 @@
             const antenna = document.getElementById('antenna').value.trim();
             const qth = document.getElementById('qth').value.trim();
             const notes = document.getElementById('notes').value.trim();
-            if (!callsign || !frequency || !mode || !utcTime) {
-                alert('请填写呼号、频率、模式和时间');
+
+            if (!callsign || !frequency || !mode || !utcTime || !parseUtcStringToDateParts(utcTime)) {
+                alert('请填写有效的呼号、频率、模式和时间');
                 return;
             }
+
             const logIndex = logs.findIndex(log => log.id === currentEditId);
             if (logIndex !== -1) {
                 logs[logIndex] = {
@@ -878,7 +1130,7 @@
                     callsign,
                     frequency,
                     mode,
-                    utcTime,
+                    utcTime, // 存储为 YYYY-MM-DDTHH:MM 格式的 UTC 时间
                     myReport,
                     theirReport,
                     myPower,
@@ -888,8 +1140,8 @@
                     qth,
                     notes
                 };
-                showPage('logs-page'); // 先切换页面
-                renderLogs(currentEditId); // 再渲染并滚动
+                showPage('logs-page');
+                renderLogs(currentEditId);
                 clearForm();
             }
         });
@@ -900,7 +1152,8 @@
             const callsign = document.getElementById('callsign').value.trim();
             const frequency = document.getElementById('frequency').value.trim();
             const mode = document.getElementById('mode').value.trim();
-            const utcTime = document.getElementById('utc-time').value;
+            // 存储为 YYYY-MM-DDTHH:MM 格式的 UTC 时间
+            const utcTime = document.getElementById('utc-time').value; 
             const myReport = document.getElementById('my-report').value.trim();
             const theirReport = document.getElementById('their-report').value.trim();
             const myPower = document.getElementById('my-power').value.trim();
@@ -909,16 +1162,18 @@
             const antenna = document.getElementById('antenna').value.trim();
             const qth = document.getElementById('qth').value.trim();
             const notes = document.getElementById('notes').value.trim();
-            if (!callsign || !frequency || !mode || !utcTime) {
-                alert('请填写呼号、频率、模式和时间');
+
+            if (!callsign || !frequency || !mode || !utcTime || !parseUtcStringToDateParts(utcTime)) {
+                alert('请填写有效的呼号、频率、模式和时间');
                 return;
             }
+
             const log = {
                 id: Date.now(),
                 callsign,
                 frequency,
                 mode,
-                utcTime,
+                utcTime, // 存储为 YYYY-MM-DDTHH:MM 格式的 UTC 时间
                 myReport,
                 theirReport,
                 myPower,
@@ -928,13 +1183,14 @@
                 qth,
                 notes
             };
+
             logs.unshift(log);
             localStorage.setItem('hamLogs', JSON.stringify(logs));
             clearForm();
             addLogBtn.innerHTML = '<i class="fas fa-check"></i> 添加成功!';
             setTimeout(() => addLogBtn.innerHTML = '<i class="fas fa-plus"></i> 添加通联记录', 2000);
             showPage('logs-page');
-            renderLogs(log.id); // ✅ 添加后滚动到新卡片
+            renderLogs(log.id);
         });
 
         clearFormBtn.addEventListener('click', clearForm);
@@ -942,6 +1198,7 @@
         function getBandFromFrequency(freqStr) {
             const freq = parseFloat(freqStr);
             if (isNaN(freq)) return 'UNKNOWN';
+
             if (freq >= 1.8 && freq < 2.0) return '160m';
             if (freq >= 3.5 && freq < 4.0) return '80m';
             if (freq >= 5.0 && freq < 5.5) return '60m';
@@ -955,6 +1212,7 @@
             if (freq >= 50.0 && freq < 54.0) return '6m';
             if (freq >= 144.0 && freq < 148.0) return '2m';
             if (freq >= 420.0 && freq < 450.0) return '70cm';
+
             return 'OTHER';
         }
 
@@ -963,6 +1221,7 @@
                 alert('没有通联记录可导出');
                 return;
             }
+
             const MY_CALLSIGN = getCallSignFromStorage();
             let adiContent = 'Generated by Log\n';
             adiContent += '<ADIF_VER:5>3.1.0\n';
@@ -970,6 +1229,7 @@
             adiContent += '<PROGRAMVERSION:5>1.0.0\n';
             adiContent += `<STATION_CALLSIGN:${MY_CALLSIGN.length}>${MY_CALLSIGN}\n`;
             adiContent += '<EOH>\n';
+
             logs.forEach(log => {
                 const band = getBandFromFrequency(log.frequency) || 'OTHER';
                 const qth = log.qth || 'Unknown';
@@ -978,8 +1238,11 @@
                 const txPwr = log.myPower || '100';
                 const rxPwr = log.power || '100';
                 const notes = log.notes || '';
-                const dateStr = log.utcTime.replace(/-/g, '').substring(0, 8);
-                const timeStr = log.utcTime.substring(11, 16).replace(':', '');
+                
+                // log.utcTime 格式为 YYYY-MM-DDTHH:MM，直接用于导出 ADIF
+                const dateStr = log.utcTime.replace(/-/g, '').substring(0, 8); // YYYYMMDD
+                const timeStr = log.utcTime.substring(11, 16).replace(':', ''); // HHMM
+
                 adiContent += `<BAND:${band.length}>${band}\n`;
                 adiContent += `<CALL:${log.callsign.length}>${log.callsign}\n`;
                 adiContent += `<STATION_CALLSIGN:${MY_CALLSIGN.length}>${MY_CALLSIGN}\n`;
@@ -1001,6 +1264,7 @@
                 adiContent += `<QTH:${qth.length}>${qth}\n`;
                 adiContent += '<EOR>\n';
             });
+
             const blob = new Blob([adiContent], { type: 'text/plain;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -1012,27 +1276,29 @@
             URL.revokeObjectURL(url);
         });
 
+        // 修改：使用 Date.UTC 构造函数来保证时区中立的分钟比较
         function isDuplicate(newLog, existingLog) {
-            if (newLog.callsign !== existingLog.callsign || 
-                newLog.mode !== existingLog.mode || 
-                getBandFromFrequency(newLog.frequency) !== getBandFromFrequency(existingLog.frequency)) {
+            if (newLog.callsign !== existingLog.callsign || newLog.mode !== existingLog.mode || getBandFromFrequency(newLog.frequency) !== getBandFromFrequency(existingLog.frequency)) {
                 return false;
             }
-            const newDate = new Date(newLog.utcTime);
-            const existingDate = new Date(existingLog.utcTime);
-            if (newDate.getUTCFullYear() !== existingDate.getUTCFullYear() ||
-                newDate.getUTCMonth() !== existingDate.getUTCMonth() ||
-                newDate.getUTCDate() !== existingDate.getUTCDate()) {
-                return false;
-            }
-            const newMinutes = newDate.getUTCHours() * 60 + newDate.getUTCMinutes();
-            const existingMinutes = existingDate.getUTCHours() * 60 + existingDate.getUTCMinutes();
-            return Math.abs(newMinutes - existingMinutes) < 1;
+            
+            const newParts = parseUtcStringToDateParts(newLog.utcTime);
+            const existingParts = parseUtcStringToDateParts(existingLog.utcTime);
+
+            if (!newParts || !existingParts) return false;
+
+            // 使用 Date.UTC 构造函数，基于存储的 YYYY-MM-DDTHH:MM 值，创建一个 UTC 时间戳
+            const newTimestamp = Date.UTC(newParts.year, newParts.month - 1, newParts.day, newParts.hours, newParts.minutes);
+            const existingTimestamp = Date.UTC(existingParts.year, existingParts.month - 1, existingParts.day, existingParts.hours, existingParts.minutes);
+
+            // 比较分钟差（1分钟内算重复）
+            return Math.abs(newTimestamp - existingTimestamp) < 60000;
         }
 
         importAdiBtn.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (!file) return;
+            
             const reader = new FileReader();
             reader.onload = (event) => {
                 try {
@@ -1041,34 +1307,39 @@
                     let newLogs = [];
                     let duplicates = 0;
                     let currentRecord = {};
+
                     for (let line of lines) {
                         line = line.trim();
                         if (line.startsWith('<')) {
                             if (line.includes('<EOH>')) continue;
+
                             if (line === '<EOR>') {
-                                if (currentRecord.CALL && currentRecord.FREQ && currentRecord.MODE && 
-                                    currentRecord.QSO_DATE && currentRecord.TIME_ON) {
+                                if (currentRecord.CALL && currentRecord.FREQ && currentRecord.MODE && currentRecord.QSO_DATE && currentRecord.TIME_ON) {
                                     const year = currentRecord.QSO_DATE.substring(0, 4);
                                     const month = currentRecord.QSO_DATE.substring(4, 6);
                                     const day = currentRecord.QSO_DATE.substring(6, 8);
-                                    const hours = currentRecord.TIME_ON.substring(0, 2);
-                                    const minutes = currentRecord.TIME_ON.substring(2, 4);
+                                    const hours = currentRecord.TIME_ON.substring(0, 2).padStart(2, '0');
+                                    const minutes = currentRecord.TIME_ON.substring(2, 4).padStart(2, '0');
+                                    
+                                    // 确保 ADIF 中的时间被视为 UTC，并以 YYYY-MM-DDTHH:MM 格式存储
                                     const utcTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+
                                     const log = {
                                         id: Date.now() + Math.random(),
                                         callsign: currentRecord.CALL,
                                         frequency: currentRecord.FREQ,
                                         mode: currentRecord.MODE,
-                                        utcTime: utcTime,
+                                        utcTime: utcTime, // 存储为 YYYY-MM-DDTHH:MM UTC
                                         myReport: currentRecord.RST_SENT || '59',
                                         theirReport: currentRecord.RST_RCVD || '59',
-                                        myPower: currentRecord.TX_PWR || '100',
-                                        power: currentRecord.RX_PWR || currentRecord.TX_PWR || '100',
-                                        equipment: currentRecord.RIG || 'Transceiver',
-                                        antenna: currentRecord.ANTENNA || 'Antenna',
-                                        qth: currentRecord.QTH || 'Unknown',
+                                        myPower: currentRecord.TX_PWR || '',
+                                        power: currentRecord.RX_PWR || currentRecord.TX_PWR || '',
+                                        equipment: currentRecord.RIG || '',
+                                        antenna: currentRecord.ANTENNA || '',
+                                        qth: currentRecord.QTH || '',
                                         notes: currentRecord.NOTES || ''
                                     };
+
                                     let isDup = false;
                                     for (const existingLog of logs) {
                                         if (isDuplicate(log, existingLog)) {
@@ -1077,6 +1348,7 @@
                                             break;
                                         }
                                     }
+
                                     if (!isDup) newLogs.push(log);
                                 }
                                 currentRecord = {};
@@ -1088,12 +1360,15 @@
                             }
                         }
                     }
+
                     if (newLogs.length > 0) {
                         logs = [...newLogs, ...logs];
                         localStorage.setItem('hamLogs', JSON.stringify(logs));
                         renderLogs();
+
                         let statusMsg = `成功导入 ${newLogs.length} 条通联记录`;
                         if (duplicates > 0) statusMsg += `，跳过 ${duplicates} 个重复记录`;
+
                         importStatus.textContent = statusMsg;
                         importStatus.className = 'import-status import-success';
                         importStatus.style.display = 'block';
@@ -1116,9 +1391,10 @@
             reader.readAsText(file);
         });
 
-        // Settings
         function loadSettings() {
             document.getElementById('my-callsign').value = MY_CALLSIGN;
+            utcPlus8Toggle.checked = CONFIG.useUTCPlus8;
+            
             renderEditableList('freq-list', CONFIG.frequencies);
             renderEditableList('mode-list', CONFIG.modes);
             renderEditableList('power-list', CONFIG.power);
@@ -1135,6 +1411,7 @@
                 div.innerHTML = `${item} <span class="remove-btn" data-value="${item}" data-type="${containerId}">×</span>`;
                 container.appendChild(div);
             });
+
             container.querySelectorAll('.remove-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const value = e.target.dataset.value;
@@ -1215,9 +1492,13 @@
 
         document.getElementById('save-settings').addEventListener('click', () => {
             MY_CALLSIGN = document.getElementById('my-callsign').value.trim();
+            CONFIG.useUTCPlus8 = utcPlus8Toggle.checked;
+
             localStorage.setItem('myCallsign', MY_CALLSIGN);
             localStorage.setItem('config', JSON.stringify(CONFIG));
             alert('设置已保存');
+            
+            refreshUTCTime(); 
             renderLogs();
         });
 
