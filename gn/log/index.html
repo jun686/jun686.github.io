@@ -82,7 +82,9 @@
         .btn-warning:hover { background: #f8c800; }
         .btn-danger { background: var(--error); color: white; }
         .btn-danger:hover { background: #d32f2f; }
+        /* 【修改】快捷气泡居中 */
         .bubbles-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 10px; padding: 10px 0; }
+        
         .bubble { padding: 6px 12px; background: var(--bubble-bg); border-radius: 20px; cursor: pointer; transition: all 0.2s ease; font-size: 0.9rem; white-space: nowrap; }
         .bubble:hover { background: var(--bubble-hover); transform: translateY(-2px); }
         .bubble.active { background: var(--primary); box-shadow: 0 2px 8px rgba(10, 102, 194, 0.5); }
@@ -220,7 +222,6 @@
         const logsTitle = document.getElementById('logs-title');
         const logSearchInput = document.getElementById('log-search');
         const utcPlus8Toggle = document.getElementById('utc-plus8-toggle');
-        // 【新增】回到顶部按钮
         const scrollToTopBtn = document.getElementById('scroll-to-top-btn');
 
 
@@ -316,7 +317,6 @@
         createBubbles();
         clearForm();
         loadSettings();
-        // 【新增】初始化回到顶部按钮逻辑
         setupScrollToTopButton();
 
         if (logSearchInput) logSearchInput.addEventListener('input', () => renderLogs());
@@ -350,7 +350,6 @@
             else if (pageId === 'logs-page') logsBtn.classList.add('active');
             else if (pageId === 'settings-page') settingsBtn.classList.add('active');
 
-            // 【修改】在切换页面时检查目标页面滚动状态，决定是否显示回到顶部按钮
             const pageElement = document.getElementById(pageId);
             if (pageElement && pageElement.id !== 'log-form-page' && pageElement.scrollTop > 100) {
                 scrollToTopBtn.style.display = 'inline-flex';
@@ -500,7 +499,7 @@
                     if (targetCard) { 
                         logsPage.scrollTo({ 
                             top: targetCard.offsetTop - 120, 
-                            behavior: 'auto' // 瞬间跳转，无动画
+                            behavior: 'auto'
                         }); 
                     }
                 }, 0); 
@@ -619,11 +618,18 @@
                 adiContent += `<RX_PWR:${rxPwr.length}>${rxPwr}\n<TX_PWR:${txPwr.length}>${txPwr}\n<RST_RCVD:${(log.theirReport || '59').length}>${log.theirReport || '59'}\n<RST_SENT:${(log.myReport || '59').length}>${log.myReport || '59'}\n`;
                 adiContent += `<TIME_ON:4>${timeStr}\n<RIG:${rig.length}>${rig}\n<ANTENNA:${antenna.length}>${antenna}\n<QTH:${qth.length}>${qth}\n<EOR>\n`;
             });
-            const blob = new Blob([adiContent], { type: 'text/plain;charset=utf-8' });
+            
+            // 【兼容性修改点】将 MIME type 更改为 application/octet-stream，以确保浏览器正确使用 .adi 扩展名
+            const blob = new Blob([adiContent], { type: 'application/octet-stream' }); 
+            
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url; a.download = 'Log_' + new Date().toISOString().slice(0, 10) + '.adi';
-            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+            a.href = url; 
+            a.download = 'Log_' + new Date().toISOString().slice(0, 10) + '.adi';
+            document.body.appendChild(a); 
+            a.click(); 
+            document.body.removeChild(a); 
+            URL.revokeObjectURL(url);
         });
 
         function isDuplicate(newLog, existingLog) {
@@ -748,15 +754,12 @@
 
         function saveConfig() { localStorage.setItem('config', JSON.stringify(CONFIG)); }
         
-        // 【新增功能】回到顶部按钮的逻辑
         function setupScrollToTopButton() {
             const pagesWithScroll = [logsPage, settingsPage];
 
             pagesWithScroll.forEach(pageElement => {
                 if (pageElement) {
-                    // 监听滚动事件：当向下滚动超过100px时显示按钮，否则隐藏
                     pageElement.addEventListener('scroll', () => {
-                        // 只有当该页面是当前活动页面时，才控制按钮的显示
                         const isActive = pageElement.classList.contains('active');
                         if (!isActive) return;
 
@@ -769,7 +772,6 @@
                 }
             });
 
-            // 按钮点击事件：平滑滚动到当前活动页面的顶部
             scrollToTopBtn.addEventListener('click', () => {
                 const activePage = document.querySelector('.page.active');
                 if (activePage && (activePage.id === 'logs-page' || activePage.id === 'settings-page')) {
@@ -777,7 +779,6 @@
                 }
             });
             
-            // 确保初始状态是隐藏的
             scrollToTopBtn.style.display = 'none';
         }
 
