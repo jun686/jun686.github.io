@@ -1,0 +1,2 @@
+VERSION=1.1.0
+DOWNLOAD_URL=https://jun.now.cc/gn/log/4.0.apk
