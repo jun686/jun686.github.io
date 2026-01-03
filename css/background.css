@@ -9,3 +9,76 @@
 #web_bg {
     background: linear-gradient(90deg,rgba(247,149,51,.1),rgba(243,112,85,.1) 15%,rgba(239,78,123,.1) 30%,rgba(161,102,171,.1) 44%,rgba(80,115,184,.1) 58%,rgba(16,152,173,.1) 72%,rgba(7,179,155,.1) 86%,rgba(109,186,130,.1))
 }
+
+/* ========== 浅色模式：重毛玻璃（其他卡片） ========== */
+
+:root {
+    --glass-bg-light: rgba(225, 228, 235, 0.90);
+    --glass-bg-light-alt: rgba(220, 223, 232, 0.88);
+    --glass-blur: 15px;
+}
+
+/* 所有浅色卡片（排除个人信息卡片） */
+#bber-talk,
+#aside-content > .card-widget.card-announcement,
+#aside-content > .sticky_layout > .card-widget,
+#aside-content > .card-widget.welcomeBoxClass,
+#recent-posts > #noticeList,
+.layout > #post,
+#recent-posts > .recent-post-item,
+.layout > #page,
+.layout > #archive,
+.layout > #category,
+.layout > #tag {
+    background: linear-gradient(-45deg,
+        var(--glass-bg-light-alt),
+        var(--glass-bg-light),
+        var(--glass-bg-light),
+        var(--glass-bg-light-alt));
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+/* 深色模式 hover 背景 */
+[data-theme=dark] #aside-content > .card-widget.card-info::before {
+    background: linear-gradient(to bottom,
+            rgba(24, 40, 72, 0.15),
+            rgba(35, 37, 58, 0.4),
+            rgba(35, 37, 58, 0.7),
+            rgba(24, 40, 72, 0.85)),
+        url('/config/img/dog.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/* ========== 其他深色卡片 ========== */
+
+[data-theme=dark] #bber-talk,
+[data-theme=dark] #aside-content > .card-widget.card-announcement,
+[data-theme=dark] #aside-content > .sticky_layout > .card-widget,
+[data-theme=dark] #aside-content > .card-widget.welcomeBoxClass,
+[data-theme=dark] #recent-posts > #noticeList,
+[data-theme=dark] .layout > #post,
+[data-theme=dark] #recent-posts > .recent-post-item,
+[data-theme=dark] .layout > #page,
+[data-theme=dark] .layout > #archive,
+[data-theme=dark] .layout > #category,
+[data-theme=dark] .layout > #tag {
+    background: linear-gradient(-45deg,
+        rgba(24, 40, 72, 0.75),
+        rgba(35, 37, 58, 0.85),
+        rgba(35, 37, 58, 0.85),
+        rgba(24, 40, 72, 0.75));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* ========== 全局 ========== */
+
+.layout.hide-aside {
+    max-width: 1200px;
+}
+
+[data-theme=dark] .social-icon i {
+    color: rgba(188, 188, 188) !important;
+}
