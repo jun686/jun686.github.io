@@ -1684,14 +1684,52 @@ renderEditableList('equip-list', CONFIG.equipment);
 renderEditableList('antenna-list', CONFIG.antennas);
 applyBothFieldVisibility();
 }
-// ===== 新增函数：实时保存设置 =====
+// ===== 修改后的函数：实时保存设置 =====
 function setupRealTimeSettings() {
     // 呼号实时保存
     document.getElementById('my-callsign').addEventListener('input', (e) => {
         MY_CALLSIGN = e.target.value.trim();
         localStorage.setItem('myCallsign', MY_CALLSIGN);
+
+        // 【新增逻辑】如果呼号为空，强制关闭自动上传和自动拉取
+        if (!MY_CALLSIGN) {
+            let needsUpdate = false;
+            
+            // 检查并关闭自动上传
+            if (CONFIG.autoUpload) {
+                CONFIG.autoUpload = false;
+                needsUpdate = true;
+            }
+            // 检查并关闭自动拉取
+            if (CONFIG.autoPull) {
+                CONFIG.autoPull = false;
+                needsUpdate = true;
+            }
+
+            // 如果状态发生了改变，执行更新操作
+            if (needsUpdate) {
+                // 1. 更新 UI 开关状态
+                document.getElementById('auto-upload-toggle').checked = false;
+                document.getElementById('auto-pull-toggle').checked = false;
+
+                // 2. 清除定时器 (防止后台继续尝试同步)
+                if (autoUploadInterval) {
+                    clearInterval(autoUploadInterval);
+                    autoUploadInterval = null;
+                }
+                if (autoPullInterval) {
+                    clearInterval(autoPullInterval);
+                    autoPullInterval = null;
+                }
+
+                // 3. 保存配置到本地存储
+                saveConfig();
+                
+                // 可选：如果需要提示用户，可以取消下面这行的注释
+                // console.log('呼号为空，已自动关闭同步功能');
+            }
+        }
     });
-    
     // UTC+8 开关实时保存
     utcPlus8Toggle.addEventListener('change', (e) => {
         CONFIG.useUTCPlus8 = e.target.checked;
@@ -1699,14 +1737,12 @@ function setupRealTimeSettings() {
         refreshUTCTime();
         renderLogs();
     });
-    
     // 双方字段开关实时保存
     ['show-equipment-both', 'show-antenna-both', 'show-qth-both', 'show-grid-both', 'show-power-both'].forEach(id => {
         document.getElementById(id).addEventListener('change', (e) => {
             // 【修复】使用正则 correctly 转换 kebab-case 为 camelCase
             // show-equipment-both -> showEquipmentBoth
             const configKey = id.replace(/-([a-z])/g, (match, letter) => letter.toUpperCase());
-            
             CONFIG[configKey] = e.target.checked;
             saveConfig();
             applyBothFieldVisibility();
