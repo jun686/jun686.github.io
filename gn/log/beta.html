@@ -514,16 +514,16 @@ white-space: nowrap;
 <div id="log-form-page" class="page active">
 <div class="form-container">
 <div class="form-grid">
-<div class="form-group"> <label for="callsign">对方呼号</label> <input type="text" id="callsign" placeholder="例如：BA1AA"> </div>
-<div class="form-group"> <label for="frequency">频率 (MHz)</label> <input type="text" id="frequency" placeholder="例如：14.270">
+<div class="form-group"> <label for="callsign">对方呼号 <span style="color:red">*</span></label> <input type="text" id="callsign" placeholder="例如：BA1AA"> </div>
+<div class="form-group"> <label for="frequency">频率 (MHz) <span style="color:red">*</span></label> <input type="text" id="frequency" placeholder="例如：14.270">
 <div class="bubbles-container" id="freq-bubbles"></div>
 </div>
-<div class="form-group"> <label for="mode">模式</label> <input type="text" id="mode" placeholder="例如：SSB">
+<div class="form-group"> <label for="mode">模式 <span style="color:red">*</span></label> <input type="text" id="mode" placeholder="例如：SSB">
 <div class="bubbles-container" id="mode-bubbles"></div>
 </div>
 <div class="form-group"> <label for="utc-time">UTC 时间</label> <input type="datetime-local" id="utc-time"> </div>
-<div class="form-group"> <label for="my-report">我方信号报告</label> <input type="text" id="my-report" placeholder="例如：59"> </div>
-<div class="form-group"> <label for="their-report">对方信号报告</label> <input type="text" id="their-report" placeholder="例如：59"> </div>
+<div class="form-group"> <label for="my-report">我方信号报告 <span style="color:red">*</span></label> <input type="text" id="my-report" placeholder="例如：59"> <div class="bubbles-container" id="my-report-bubbles"></div> </div>
+<div class="form-group"> <label for="their-report">对方信号报告 <span style="color:red">*</span></label> <input type="text" id="their-report" placeholder="例如：59"> <div class="bubbles-container" id="their-report-bubbles"></div> </div>
 <div class="form-group"> <label for="my-power">我方功率</label> <input type="text" id="my-power" placeholder="例如：100">
 <div class="bubbles-container" id="my-power-bubbles"></div>
 </div>
@@ -566,7 +566,7 @@ white-space: nowrap;
 <label for="their-grid">对方网格 (Grid)</label>
 <input type="text" id="their-grid" placeholder="例如：OM91">
 </div>
-<div class="form-group"> <label for="notes">留言 (Notes)</label> <textarea id="notes" placeholder="输入通联备注..."></textarea> </div>
+<div class="form-group"> <label for="notes">备注</label> <textarea id="notes" placeholder="输入通联备注..."></textarea> </div>
 </div>
 <div class="btn-group">
 <button class="btn-primary" id="add-log"> <i class="fas fa-plus"></i> <span>添加通联记录</span> </button>
@@ -584,7 +584,7 @@ white-space: nowrap;
 <div class="logs-title-actions">
 <h2 id="logs-title">0 条记录</h2>
 <div class="logs-actions">
-<label class="file-label"> <i class="fas fa-file-import"></i> <span>导入 ADI</span> <input type="file" id="import-adi" class="file-input" accept=".adi,.ADI"> </label>
+<label class="file-label"> <i class="fas fa-file-import"></i> <span>导入 ADI</span> <input type="file" id="import-adi" class="file-input" accept=".adi,.ADI" multiple> </label>
 <button class="btn-primary" id="export-adi"> <i class="fas fa-file-export"></i> <span>导出 ADI</span> </button>
 </div>
 </div>
@@ -608,6 +608,10 @@ white-space: nowrap;
 <div class="setting-group" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
 <label for="show-equipment-both" style="margin-bottom: 0;">启用"设备"（双方）</label>
 <input type="checkbox" id="show-equipment-both" style="width: auto; margin: 0; transform: scale(1.5);">
+</div>
+<div class="setting-group" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
+<label for="show-power-both" style="margin-bottom: 0;">启用"功率"（双方）</label>
+<input type="checkbox" id="show-power-both" style="width: auto; margin: 0; transform: scale(1.5);">
 </div>
 <div class="setting-group" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
 <label for="show-antenna-both" style="margin-bottom: 0;">启用"天线"（双方）</label>
@@ -636,6 +640,9 @@ white-space: nowrap;
 </div>
 <div class="editable-section"> <label>模式</label>
 <div class="editable-list" id="mode-list"></div> <input type="text" id="new-mode" placeholder="添加新模式"> <button class="btn-secondary" id="add-mode">添加</button>
+</div>
+<div class="editable-section"> <label>信号报告</label>
+<div class="editable-list" id="report-list"></div> <input type="text" id="new-report" placeholder="添加新信号报告"> <button class="btn-secondary" id="add-report">添加</button>
 </div>
 <div class="editable-section"> <label>功率</label>
 <div class="editable-list" id="power-list"></div> <input type="text" id="new-power" placeholder="添加新功率"> <button class="btn-secondary" id="add-power">添加</button>
@@ -670,20 +677,28 @@ white-space: nowrap;
 </div>
 <script>
 const DEFAULT_CONFIG = {
-frequencies: ['438.5', '439.8875', '439.95', '439.6', '438.85', '439.875', '439.8', '14.270', '28.500', '50.110'],
+frequencies: ['438.5', '439.8', '14.270', '28.500', '50.110'],
 modes: ['SSB', 'CW', 'FT8', 'FM', 'AM'],
 equipment: ['UVK6', 'UVK5', 'UV5R', 'TK11', '5Rmini', 'SHX8800', 'SHX8600', '八重洲 FT991', '八重洲 300D', '即时通 D9000'],
 antennas: ['原装', '八木', '拉杆', 'MA01', '正 V'],
-power: ['1', '3', '5', '8', '15', '25', '50', 'H', 'M', 'L'],
+power: ['1', '3', '5', '8', '15', '25', '50'],
+signalReports: ['59', '58', '49', '48'],
 useUTCPlus8: false,
 showEquipmentBoth: false,
 showAntennaBoth: false,
 showQthBoth: false,
 showGridBoth: false,
+showPowerBoth: false,
 autoUpload: false,
 autoPull: false
 };
-let CONFIG = JSON.parse(localStorage.getItem('config')) || { ...DEFAULT_CONFIG };
+let savedConfig = {};
+try {
+    savedConfig = JSON.parse(localStorage.getItem('config')) || {};
+} catch (e) {
+    savedConfig = {};
+}
+let CONFIG = { ...DEFAULT_CONFIG, ...savedConfig };
 let MY_CALLSIGN = localStorage.getItem('myCallsign') || '';
 let autoPullInterval = null;
 let autoUploadInterval = null;
@@ -743,12 +758,12 @@ const MY_CALL = getCurrentCallsign() || 'YOUR_CALLSIGN';
 let adi = 'Generated by Log\n<ADIF_VER:5>3.1.0\n<PROGRAMID:7>Log\n<PROGRAMVERSION:5>1.0.0\n';
 adi += `<STATION_CALLSIGN:${MY_CALL.length}>${MY_CALL}\n<EOH>\n`;
 logsArray.forEach(log => {
-const band = getBandFromFrequency(log.frequency) || 'OTHER';
-const qth = log.qth || 'Unknown';
-const rig = log.equipment || 'Transceiver';
-const antenna = log.antenna || 'Antenna';
-const txPwr = log.myPower || '100';
-const rxPwr = log.power || '100';
+const band = getBandFromFrequency(log.frequency) || '';
+const qth = log.qth || '';
+const rig = log.equipment || '';
+const antenna = log.antenna || '';
+const txPwr = log.myPower || '';
+const rxPwr = log.power || '';
 const notes = log.notes || '';
 const dateStr = log.utcTime.replace(/-/g, '').substring(0, 8);
 const timeStr = log.utcTime.substring(11, 16).replace(':', '');
@@ -758,8 +773,8 @@ if (notes) adi += `<NOTES:${notes.length}>${notes}\n<NOTES_INTL:${notes.length}>
 adi += `<QSO_DATE:8>${dateStr}\n<FREQ_RX:${log.frequency.length}>${log.frequency}\n`;
 adi += `<FREQ:${log.frequency.length}>${log.frequency}\n<MODE:${log.mode.length}>${log.mode}\n`;
 adi += `<RX_PWR:${rxPwr.length}>${rxPwr}\n<TX_PWR:${txPwr.length}>${txPwr}\n`;
-adi += `<RST_RCVD:${(log.theirReport || '59').length}>${log.theirReport || '59'}\n`;
-adi += `<RST_SENT:${(log.myReport || '59').length}>${log.myReport || '59'}\n`;
+adi += `<RST_RCVD:${(log.theirReport || '').length}>${log.theirReport || ''}\n`;
+adi += `<RST_SENT:${(log.myReport || '').length}>${log.myReport || ''}\n`;
 adi += `<TIME_ON:4>${timeStr}\n<RIG:${rig.length}>${rig}\n<ANTENNA:${antenna.length}>${antenna}\n`;
 adi += `<QTH:${qth.length}>${qth}\n`;
 if (log.myQth) adi += `<MY_CITY:${log.myQth.length}>${log.myQth}\n`;
@@ -829,8 +844,8 @@ callsign: currentRecord.CALL,
 frequency: currentRecord.FREQ,
 mode: currentRecord.MODE,
 utcTime: utcTime,
-myReport: currentRecord.RST_SENT || '59',
-theirReport: currentRecord.RST_RCVD || '59',
+myReport: currentRecord.RST_SENT || '',
+theirReport: currentRecord.RST_RCVD || '',
 myPower: currentRecord.TX_PWR || '',
 myEquipment: currentRecord.MY_RIG || '',
 myAntenna: currentRecord.MY_ANTENNA || '',
@@ -1025,6 +1040,7 @@ toggleFieldPair('my-equipment', 'equipment', CONFIG.showEquipmentBoth);
 toggleFieldPair('my-antenna', 'antenna', CONFIG.showAntennaBoth);
 toggleFieldPair('my-qth', 'qth', CONFIG.showQthBoth);
 toggleFieldPair('my-grid', 'their-grid', CONFIG.showGridBoth);
+toggleFieldPair('my-power', 'power', CONFIG.showPowerBoth);
 }
 function toggleFieldPair(myId, theirId, show) {
 const myGroup = document.getElementById(myId)?.closest('.form-group');
@@ -1091,6 +1107,8 @@ createBubblesFor('freq-bubbles', CONFIG.frequencies, 'frequency');
 createBubblesFor('mode-bubbles', CONFIG.modes, 'mode');
 createBubblesFor('power-bubbles', CONFIG.power, 'power');
 createBubblesFor('my-power-bubbles', CONFIG.power, 'my-power');
+createBubblesFor('my-report-bubbles', CONFIG.signalReports, 'my-report');  // 新增
+createBubblesFor('their-report-bubbles', CONFIG.signalReports, 'their-report');  // 新增
 createBubblesFor('equip-bubbles', CONFIG.equipment, 'equipment');
 createBubblesFor('antenna-bubbles', CONFIG.antennas, 'antenna');
 createBubblesFor('my-equip-bubbles', CONFIG.equipment, 'my-equipment');
@@ -1112,6 +1130,8 @@ syncInputWithBubbles('frequency', 'freq-bubbles', CONFIG.frequencies);
 syncInputWithBubbles('mode', 'mode-bubbles', CONFIG.modes);
 syncInputWithBubbles('power', 'power-bubbles', CONFIG.power);
 syncInputWithBubbles('my-power', 'my-power-bubbles', CONFIG.power);
+syncInputWithBubbles('my-report', 'my-report-bubbles', CONFIG.signalReports);
+syncInputWithBubbles('their-report', 'their-report-bubbles', CONFIG.signalReports);
 syncInputWithBubbles('equipment', 'equip-bubbles', CONFIG.equipment);
 syncInputWithBubbles('antenna', 'antenna-bubbles', CONFIG.antennas);
 syncInputWithBubbles('my-equipment', 'my-equip-bubbles', CONFIG.equipment);
@@ -1166,11 +1186,11 @@ refreshUTCTime();
 showPage('log-form-page');
 });
 logsBtn.addEventListener('click', () => {
-if (logSearchInput.value.trim() !== '') {
-logSearchInput.value = '';
-renderLogs();
-}
-showPage('logs-page');
+    if (logSearchInput.value.trim() !== '') {
+        logSearchInput.value = '';
+    }
+    renderLogs(); // 【修复】无论搜索框是否有内容，进入日志页都强制刷新列表
+    showPage('logs-page');
 });
 settingsBtn.addEventListener('click', () => {
 loadSettings();
@@ -1423,8 +1443,8 @@ const equipment = document.getElementById('equipment').value.trim();
 const antenna = document.getElementById('antenna').value.trim();
 const qth = document.getElementById('qth').value.trim();
 const notes = document.getElementById('notes').value.trim();
-if (!callsign || !frequency || !mode || !utcTime || !parseUtcStringToDateParts(utcTime)) {
-await showModal('表单错误', '请填写有效的呼号、频率、模式和时间', false);
+if (!callsign || !frequency || !mode || !utcTime || !parseUtcStringToDateParts(utcTime) || !myReport || !theirReport) {
+await showModal('表单错误', '请填写呼号、频率、模式和信号报告', false);
 return;
 }
 const log = {
@@ -1490,12 +1510,12 @@ const MY_CALLSIGN = getCallSignFromStorage();
 let adiContent = 'Generated by Log\n<ADIF_VER:5>3.1.0\n<PROGRAMID:7>Log\n<PROGRAMVERSION:5>1.0.0\n';
 adiContent += `<STATION_CALLSIGN:${MY_CALLSIGN.length}>${MY_CALLSIGN}\n<EOH>\n`;
 logs.forEach(log => {
-const band = getBandFromFrequency(log.frequency) || 'OTHER';
-const qth = log.qth || 'Unknown';
-const rig = log.equipment || 'Transceiver';
-const antenna = log.antenna || 'Antenna';
-const txPwr = log.myPower || '100';
-const rxPwr = log.power || '100';
+const band = getBandFromFrequency(log.frequency) || '';
+const qth = log.qth || '';
+const rig = log.equipment || '';
+const antenna = log.antenna || '';
+const txPwr = log.myPower || '';
+const rxPwr = log.power || '';
 const notes = log.notes || '';
 const dateStr = log.utcTime.replace(/-/g, '').substring(0, 8);
 const timeStr = log.utcTime.substring(11, 16).replace(':', '');
@@ -1504,7 +1524,7 @@ if (notes) {
 adiContent += `<NOTES:${notes.length}>${notes}\n<NOTES_INTL:${notes.length}>${notes}\n`;
 }
 adiContent += `<QSO_DATE:8>${dateStr}\n<FREQ_RX:${log.frequency.length}>${log.frequency}\n<FREQ:${log.frequency.length}>${log.frequency}\n<MODE:${log.mode.length}>${log.mode}\n`;
-adiContent += `<RX_PWR:${rxPwr.length}>${rxPwr}\n<TX_PWR:${txPwr.length}>${txPwr}\n<RST_RCVD:${(log.theirReport || '59').length}>${log.theirReport || '59'}\n<RST_SENT:${(log.myReport || '59').length}>${log.myReport || '59'}\n`;
+adiContent += `<RX_PWR:${rxPwr.length}>${rxPwr}\n<TX_PWR:${txPwr.length}>${txPwr}\n<RST_RCVD:${(log.theirReport || '').length}>${log.theirReport || ''}\n<RST_SENT:${(log.myReport || '').length}>${log.myReport || ''}\n`;
 adiContent += `<TIME_ON:4>${timeStr}\n<RIG:${rig.length}>${rig}\n<ANTENNA:${antenna.length}>${antenna}\n<QTH:${qth.length}>${qth}\n`;
 if (log.myQth) adiContent += `<MY_CITY:${log.myQth.length}>${log.myQth}\n`;
 if (log.myGrid) adiContent += `<MY_GRIDSQUARE:${log.myGrid.length}>${log.myGrid}\n`;
@@ -1549,95 +1569,93 @@ const newTimestamp = Date.UTC(newParts.year, newParts.month - 1, newParts.day, n
 const existingTimestamp = Date.UTC(existingParts.year, existingParts.month - 1, existingParts.day, existingParts.hours, existingParts.minutes);
 return Math.abs(newTimestamp - existingTimestamp) < 60000;
 }
-importAdiBtn.addEventListener('change', (e) => {
-const file = e.target.files[0];
-if (!file) return;
-const reader = new FileReader();
-reader.onload = (event) => {
-try {
-const content = event.target.result;
-const lines = content.split('\n');
-let newLogs = [];
-let duplicates = 0;
-let currentRecord = {};
-for (let line of lines) {
-line = line.trim();
-if (line.startsWith('<')) {
-if (line.includes('<EOH>')) continue;
-if (line === '<EOR>') {
-if (currentRecord.CALL && currentRecord.FREQ && currentRecord.MODE && currentRecord.QSO_DATE && currentRecord.TIME_ON) {
-const year = currentRecord.QSO_DATE.substring(0, 4);
-const month = currentRecord.QSO_DATE.substring(4, 6);
-const day = currentRecord.QSO_DATE.substring(6, 8);
-const hours = currentRecord.TIME_ON.substring(0, 2).padStart(2, '0');
-const minutes = currentRecord.TIME_ON.substring(2, 4).padStart(2, '0');
-const utcTime = `${year}-${month}-${day}T${hours}:${minutes}`;
-const log = {
-id: Date.now() + Math.random(),
-callsign: currentRecord.CALL,
-frequency: currentRecord.FREQ,
-mode: currentRecord.MODE,
-utcTime: utcTime,
-myReport: currentRecord.RST_SENT || '59',
-theirReport: currentRecord.RST_RCVD || '59',
-myPower: currentRecord.TX_PWR || '',
-myEquipment: currentRecord.MY_RIG || '',
-myAntenna: currentRecord.MY_ANTENNA || '',
-myQth: currentRecord.MY_CITY || '',
-myGrid: currentRecord.MY_GRIDSQUARE || '',
-theirGrid: currentRecord.GRIDSQUARE || '',
-power: currentRecord.RX_PWR || currentRecord.TX_PWR || '',
-equipment: currentRecord.RIG || '',
-antenna: currentRecord.ANTENNA || '',
-qth: currentRecord.QTH || '',
-notes: currentRecord.NOTES || ''
-};
-let isDup = false;
-for (const existingLog of logs) {
-if (isDuplicate(log, existingLog)) {
-isDup = true;
-duplicates++;
-break;
+// 辅助函数：将文件读取为文本 Promise
+function readFileAsText(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = (e) => reject(e);
+        reader.readAsText(file);
+    });
 }
-}
-if (!isDup) newLogs.push(log);
-}
-currentRecord = {};
-} else {
-const fieldMatch = line.match(/<(\w+):\d+>([^<]+)/);
-if (fieldMatch) {
-currentRecord[fieldMatch[1]] = fieldMatch[2].trim();
-}
-}
-}
-}
-if (newLogs.length > 0) {
-logs = [...newLogs, ...logs];
-localStorage.setItem('hamLogs', JSON.stringify(logs));
-renderLogs();
-let statusMsg = `成功导入 ${newLogs.length} 条通联记录`;
-if (duplicates > 0) statusMsg += `，跳过 ${duplicates} 个重复记录`;
-importStatus.textContent = statusMsg;
-importStatus.className = 'import-status import-success';
-importStatus.style.display = 'block';
-setTimeout(() => importStatus.style.display = 'none', 5000);
-} else {
-let statusMsg = duplicates > 0 ? `跳过 ${duplicates} 个重复记录，无新记录导入` : '未找到有效的通联记录';
-importStatus.textContent = statusMsg;
-importStatus.className = 'import-status import-warning';
-importStatus.style.display = 'block';
-setTimeout(() => importStatus.style.display = 'none', 5000);
-}
-} catch (error) {
-console.error(error);
-importStatus.textContent = '导入失败，请检查文件格式';
-importStatus.className = 'import-status import-warning';
-importStatus.style.display = 'block';
-setTimeout(() => importStatus.style.display = 'none', 5000);
-}
-};
-reader.readAsText(file);
+// 【批量导入修改开始】
+importAdiBtn.addEventListener('change', async (e) => {
+    const files = Array.from(e.target.files); // 获取所有选中的文件
+    if (files.length === 0) return;
+
+    // 显示处理状态
+    importStatus.style.display = 'block';
+    importStatus.textContent = `正在处理 ${files.length} 个文件...`;
+    importStatus.className = 'import-status import-warning';
+
+    let newLogsBatch = []; // 存储本次导入的所有新日志
+    let totalDuplicates = 0; // 统计重复数量
+
+    // 遍历所有文件
+    for (const file of files) {
+        try {
+            const content = await readFileAsText(file);
+            // 复用现有的解析函数
+            const parsedLogs = parseAdifToLogs(content); 
+            
+            for (const log of parsedLogs) {
+                let isDup = false;
+                
+                // 1. 检查是否与现有日志重复
+                for (const existingLog of logs) {
+                    if (isDuplicate(log, existingLog)) {
+                        isDup = true;
+                        break;
+                    }
+                }
+                
+                // 2. 检查是否与本次批量导入中已添加的日志重复 (防止多个文件间重复)
+                if (!isDup) {
+                    for (const batchLog of newLogsBatch) {
+                        if (isDuplicate(log, batchLog)) {
+                            isDup = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!isDup) {
+                    newLogsBatch.push(log);
+                } else {
+                    totalDuplicates++;
+                }
+            }
+        } catch (err) {
+            console.error(`文件 ${file.name} 读取失败:`, err);
+        }
+    }
+
+    // 处理导入结果
+    if (newLogsBatch.length > 0) {
+        // 将新日志添加到现有日志开头
+        logs = [...newLogsBatch, ...logs];
+        localStorage.setItem('hamLogs', JSON.stringify(logs));
+        renderLogs();
+        
+        // 如果开启自动上传，则触发上传
+        if (CONFIG.autoUpload) {
+            await autoUploadLogs();
+        }
+
+        importStatus.textContent = `成功导入 ${newLogsBatch.length} 条记录，跳过 ${totalDuplicates} 条重复`;
+        importStatus.className = 'import-status import-success';
+    } else {
+        importStatus.textContent = `未导入新记录，跳过 ${totalDuplicates} 条重复`;
+        importStatus.className = 'import-status import-warning';
+    }
+    
+    // 5 秒后隐藏状态提示
+    setTimeout(() => importStatus.style.display = 'none', 5000);
+    
+    // 清空文件输入框，允许再次导入相同文件
+    e.target.value = '';
 });
+// 【批量导入修改结束】
 function loadSettings() {
 document.getElementById('my-callsign').value = MY_CALLSIGN;
 utcPlus8Toggle.checked = CONFIG.useUTCPlus8;
@@ -1645,10 +1663,12 @@ document.getElementById('show-equipment-both').checked = CONFIG.showEquipmentBot
 document.getElementById('show-antenna-both').checked = CONFIG.showAntennaBoth ?? false;
 document.getElementById('show-qth-both').checked = CONFIG.showQthBoth ?? false;
 document.getElementById('show-grid-both').checked = CONFIG.showGridBoth ?? false;
+document.getElementById('show-power-both').checked = CONFIG.showPowerBoth ?? false;
 document.getElementById('auto-upload-toggle').checked = CONFIG.autoUpload ?? false;
 document.getElementById('auto-pull-toggle').checked = CONFIG.autoPull ?? false;
 renderEditableList('freq-list', CONFIG.frequencies);
 renderEditableList('mode-list', CONFIG.modes);
+renderEditableList('report-list', CONFIG.signalReports);
 renderEditableList('power-list', CONFIG.power);
 renderEditableList('equip-list', CONFIG.equipment);
 renderEditableList('antenna-list', CONFIG.antennas);
@@ -1671,7 +1691,7 @@ function setupRealTimeSettings() {
     });
     
     // 双方字段开关实时保存
-    ['show-equipment-both', 'show-antenna-both', 'show-qth-both', 'show-grid-both'].forEach(id => {
+    ['show-equipment-both', 'show-antenna-both', 'show-qth-both', 'show-grid-both', 'show-power-both'].forEach(id => {
         document.getElementById(id).addEventListener('change', (e) => {
             // 【修复】使用正则 correctly 转换 kebab-case 为 camelCase
             // show-equipment-both -> showEquipmentBoth
@@ -1701,6 +1721,7 @@ let arr;
 switch (type) {
 case 'freq-list': arr = CONFIG.frequencies; break;
 case 'mode-list': arr = CONFIG.modes; break;
+case 'report-list': arr = CONFIG.signalReports; break;
 case 'power-list': arr = CONFIG.power; break;
 case 'equip-list': arr = CONFIG.equipment; break;
 case 'antenna-list': arr = CONFIG.antennas; break;
@@ -1739,6 +1760,16 @@ saveConfig();
 renderEditableList('mode-list', CONFIG.modes);
 createBubbles();
 document.getElementById('new-mode').value = '';
+}
+});
+document.getElementById('add-report').addEventListener('click', () => {
+const val = document.getElementById('new-report').value.trim();
+if (val && !CONFIG.signalReports.includes(val)) {
+CONFIG.signalReports.push(val);
+saveConfig();
+renderEditableList('report-list', CONFIG.signalReports);
+createBubbles();
+document.getElementById('new-report').value = '';
 }
 });
 document.getElementById('add-power').addEventListener('click', () => {
@@ -1802,6 +1833,69 @@ clearInterval(autoUploadInterval);
 autoUploadInterval = null;
 }
 });
+    // ==========================================
+    // 【新增】左右滑动切换页面功能
+    // ==========================================
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const swipeThreshold = 50; // 最小滑动距离 (像素)
+    const pageIds = ['log-form-page', 'logs-page', 'settings-page']; // 页面切换顺序
+
+    document.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].screenX;
+        const touchEndY = e.changedTouches[0].screenY;
+        handleSwipe(touchStartX, touchEndX, touchStartY, touchEndY);
+    }, { passive: true });
+
+    function handleSwipe(startX, endX, startY, endY) {
+        // 如果模态框（确认框）打开，不响应滑动，避免误操作
+        if (customModal && customModal.style.display === 'flex') return;
+
+        const diffX = endX - startX;
+        const diffY = endY - startY;
+
+        // 确保水平滑动距离大于垂直滑动距离，避免干扰页面内的上下滚动
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > swipeThreshold) {
+            const currentPage = document.querySelector('.page.active');
+            if (!currentPage) return;
+
+            const currentPageId = currentPage.id;
+            const currentIndex = pageIds.indexOf(currentPageId);
+            let newIndex = currentIndex;
+
+            if (diffX < 0) { 
+                // 向左滑 (手指从右向左) -> 下一页
+                if (currentIndex < pageIds.length - 1) newIndex = currentIndex + 1;
+            } else { 
+                // 向右滑 (手指从左向右) -> 上一页
+                if (currentIndex > 0) newIndex = currentIndex - 1;
+            }
+
+            if (newIndex !== currentIndex && newIndex >= 0 && newIndex < pageIds.length) {
+                const targetPageId = pageIds[newIndex];
+                
+                // 如果切换到日志页，确保刷新列表 (与点击按钮行为保持一致)
+                if (targetPageId === 'logs-page') {
+                    if (logSearchInput.value.trim() !== '') {
+                        logSearchInput.value = '';
+                    }
+                    renderLogs();
+                }
+                
+                // 如果切换到设置页，确保加载设置
+                if (targetPageId === 'settings-page') {
+                    loadSettings();
+                }
+
+                showPage(targetPageId);
+            }
+        }
+    }
 </script>
 </body>
 </html>
