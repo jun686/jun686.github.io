@@ -3,54 +3,53 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DJI Mic</title>
+    <title>DJI Mic 控制面板</title>
+    <link rel="shortcut icon" href="../..//img/favicon.ico">
     <style>
         :root {
             color-scheme: dark;
-            --motion: 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
-            --bg-black: #000000;
-            --card-bg: #171719;
-            --card-secondary: #1f1f22;
-            --text-white: #ffffff;
-            --text-gray: #a0a0a6;
-            --yellow: #ffcc00;
-            --green: #34c759;
-            --border: #2c2c30;
+            --motion: 0.25s cubic-bezier(0.4, 0.0, 0.2, 1);
+            --bg-gradient: linear-gradient(145deg, #0f172a, #111827);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-secondary: rgba(51, 65, 85, 0.5);
+            --text-white: #f8fafc;
+            --text-gray: #94a3b8;
+            --primary: #3b82f6;
+            --green: #22c55e;
+            --yellow: #f59e0b;
+            --border: rgba(255, 255, 255, 0.1);
         }
-
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-
         button, input {
             font: inherit;
         }
-
         body {
-            background-color: var(--bg-black);
+            background: var(--bg-gradient);
             color: var(--text-white);
-            font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
             padding: 20px 16px 40px;
-            max-width: 480px;
+            max-width: 640px;
             margin: 0 auto;
             min-height: 100vh;
         }
-
         .card {
             background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
-
         .card-title {
             font-size: 17px;
             font-weight: 600;
             margin-bottom: 18px;
         }
-
         .row-switch {
             display: flex;
             justify-content: space-between;
@@ -58,40 +57,33 @@
             padding: 12px 0;
             border-bottom: 1px solid var(--border);
         }
-
         .row-switch:last-child {
             border-bottom: none;
         }
-
         .row-desc {
             font-size: 13px;
             color: var(--text-gray);
             margin-top: 4px;
         }
-
         .slider-row {
             margin: 22px 0;
         }
-
         .slider-top {
             display: flex;
             justify-content: space-between;
             margin-bottom: 10px;
             font-size: 16px;
         }
-
         .slider-wrap {
             width: 100%;
         }
-
         input[type="range"] {
             width: 100%;
             height: 6px;
-            background: #2c2c30;
+            background: rgba(71, 85, 105, 0.5);
             border-radius: 99px;
-            accent-color: #fff;
+            accent-color: var(--primary);
         }
-
         .range-label {
             display: flex;
             justify-content: space-between;
@@ -99,18 +91,16 @@
             color: var(--text-gray);
             margin-top: 6px;
         }
-
         .noise-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 10px;
             margin-top: 12px;
         }
-
         .noise-btn {
             padding: 14px 0;
             border-radius: 12px;
-            border: none;
+            border: 1px solid var(--border);
             font-size: 15px;
             font-weight: 500;
             background: var(--card-secondary);
@@ -118,19 +108,18 @@
             pointer-events: none;
             user-select: none;
         }
-
         .noise-btn.active {
             background: var(--yellow);
             color: #000;
+            border-color: transparent;
         }
-
         .tx-card {
             background: var(--card-secondary);
+            border: 1px solid var(--border);
             border-radius: 14px;
             padding: 16px;
             margin-bottom: 12px;
         }
-
         .tx-head {
             display: flex;
             justify-content: space-between;
@@ -138,83 +127,114 @@
             margin-bottom: 12px;
             font-size: 16px;
         }
-
         .battery-icon {
             font-size: 18px;
         }
-
         .input-level-bar {
             width: 100%;
             height: 10px;
-            background: #2c2c30;
+            background: rgba(71, 85, 105, 0.5);
             border-radius: 99px;
             overflow: hidden;
             margin-top: 8px;
         }
-
         .input-level-fill {
             height: 100%;
             background: var(--green);
             width: 0%;
             transition: 0.08s linear;
         }
-
         .info-card {
             font-size: 14px;
             color: var(--text-gray);
             line-height: 1.6;
         }
-
         .info-item {
             display: flex;
             justify-content: space-between;
             padding: 6px 0;
         }
-
         .info-label {
             color: #fff;
         }
 
-        .top-connect-bar {
-            margin-bottom: 20px;
+        /* 控制栏样式 */
+        .control-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
         }
-
-        .connect-btn {
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            border: none;
-            background: var(--green);
-            color: #000;
-            font-weight: 600;
-            font-size: 16px;
-        }
-
-        .connect-btn:disabled {
-            background: #222;
+        .status-text {
+            font-size: 14px;
             color: var(--text-gray);
+        }
+        .status-text strong {
+            color: var(--text-white);
+            font-weight: 500;
+        }
+        .status-error {
+            color: #f87171;
+            margin-top: 4px;
+            font-size: 13px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
+        }
+        .btn-secondary {
+            background: var(--card-secondary);
+            color: var(--text-white);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover {
+            background: rgba(71, 85, 105, 0.7);
+        }
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
         }
 
         .settings-copyright {
             text-align: center;
-            color: #ffffff;
-            font-size: 0.9rem;
+            color: var(--text-gray);
+            font-size: 0.85rem;
             margin-top: 30px;
             opacity: 0.7;
-            font-weight: 600;
+            font-weight: 500;
         }
 
-        /* 官方开关样式 */
+        /* 开关样式 */
         input[type="checkbox"].switch {
             appearance: none;
             width: 50px;
             height: 28px;
-            background: #2c2c30;
+            background: rgba(71, 85, 105, 0.5);
             border-radius: 99px;
             position: relative;
-            transition: 0.2s;
+            transition: var(--motion);
+            cursor: pointer;
         }
-
         input[type="checkbox"].switch::before {
             content: "";
             position: absolute;
@@ -224,34 +244,53 @@
             border-radius: 50%;
             top: 3px;
             left: 3px;
-            transition: 0.2s;
+            transition: var(--motion);
         }
-
         input[type="checkbox"].switch:checked {
             background: var(--green);
         }
-
         input[type="checkbox"].switch:checked::before {
             left: 25px;
         }
-
         input[type="checkbox"].switch:disabled {
             opacity: 0.35;
+            cursor: not-allowed;
         }
 
         /* 默认隐藏所有卡片和版权信息 */
         .hidden-by-default {
             display: none;
         }
-
         #rawJsonPanel {
             display: none;
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(30, 41, 59, 0.3);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
         }
     </style>
 </head>
 <body>
-    <div class="top-connect-bar">
-        <button id="connBtn" class="connect-btn">连接 DJI Mic Mini</button>
+    <!-- 控制卡片 -->
+    <div class="card">
+        <div class="control-bar">
+            <div>
+                <div class="status-text">连接状态：<strong id="connStatusText">未连接</strong></div>
+                <div id="errorTip" class="status-error hidden-by-default"></div>
+            </div>
+            <div class="btn-group">
+                <button id="connBtn" class="btn btn-primary">连接设备</button>
+                <button id="disconnBtn" class="btn btn-secondary" disabled>断开</button>
+            </div>
+        </div>
     </div>
 
     <!-- 接收器设置 -->
@@ -271,7 +310,6 @@
             </div>
             <input name="rx.safetyTrack" type="checkbox" class="switch">
         </div>
-
         <div id="gainRow" class="slider-row hidden-by-default">
             <div class="slider-top">
                 <span>增益调节</span>
@@ -282,7 +320,6 @@
             </div>
             <div class="range-label"><span>-12dB</span><span>+12dB</span></div>
         </div>
-
         <div id="monitorRow" class="slider-row hidden-by-default">
             <div class="slider-top">
                 <span>监听增益</span>
@@ -297,7 +334,7 @@
 
     <!-- 降噪只读显示 -->
     <div id="noiseCard" class="card hidden-by-default">
-        <div class="card-title">降噪 <span style="font-size:13px;font-weight:400;color:#a0a0a6">读取设备当前状态</span></div>
+        <div class="card-title">降噪 <span style="font-size:13px;font-weight:400;color:var(--text-gray)">读取设备当前状态</span></div>
         <div class="noise-buttons">
             <button class="noise-btn" data-mode="0">关闭</button>
             <button class="noise-btn" data-mode="1">标准降噪</button>
@@ -313,7 +350,7 @@
                 <span id="tx1Name">DJI Mic Mini</span>
                 <span class="battery-icon">🔋 <span id="tx1Bat">--</span></span>
             </div>
-            <div style="font-size:13px;color:#a0a0a6;margin-bottom:6px">输入音量</div>
+            <div style="font-size:13px;color:var(--text-gray);margin-bottom:6px">输入音量</div>
             <div class="input-level-bar">
                 <div class="input-level-fill" id="tx1Level"></div>
             </div>
@@ -328,7 +365,7 @@
                 <span id="tx2Name">DJI Mic Mini</span>
                 <span class="battery-icon">🔋 <span id="tx2Bat">--</span></span>
             </div>
-            <div style="font-size:13px;color:#a0a0a6;margin-bottom:6px">输入音量</div>
+            <div style="font-size:13px;color:var(--text-gray);margin-bottom:6px">输入音量</div>
             <div class="input-level-bar">
                 <div class="input-level-fill" id="tx2Level"></div>
             </div>
@@ -392,21 +429,21 @@
         <textarea id="cfgTxt"></textarea>
         <pre id="stateTxt"></pre>
     </div>
-
     <div id="copyright" class="settings-copyright hidden-by-default">©BI7DIE</div>
 
     <script type="module">
-        // ==================== 100%原版原始JS通讯代码，一字未改 ====================
+        // ==================== 原版核心通讯代码保持不变 ====================
         const connBtn = document.getElementById('connBtn');
+        const disconnBtn = document.getElementById('disconnBtn');
+        const connStatusText = document.getElementById('connStatusText');
+        const errorTip = document.getElementById('errorTip');
         const cfgGrp = document.body;
         const cfgInputs = cfgGrp.querySelectorAll('input[name]');
         const applyBtn = { disabled: true };
         const cfgTxt = document.getElementById('cfgTxt');
         const stateTxt = document.getElementById('stateTxt');
-
         const isObj = (v) => v?.constructor === Object;
         const hex = (v, len = 2) => v.toString(16).padStart(len, '0');
-
         const concat = (a, b) => {
             if (a.length === 0) {
                 return b;
@@ -414,33 +451,27 @@
             if (b.length === 0) {
                 return a;
             }
-
             const c = new Uint8Array(a.length + b.length);
             c.set(a);
             c.set(b, a.length);
             return c;
         };
-
         const strDec = new TextDecoder();
         const numFmt = new Intl.NumberFormat('en-US', { signDisplay: 'exceptZero' });
-
         const ver = (buf, off) => [...buf.subarray(off, off + 4)]
             .reverse()
             .map((b) => b.toString().padStart(2, '0'))
             .join('.');
-
         const fstr = (sz) => (buf, off) => strDec.decode(buf.subarray(off, off + sz));
         const vstr = (buf, off) => strDec.decode(buf.subarray(off, off + buf[off - 1]));
         const i8 = (buf, off) => new DataView(buf.buffer, buf.byteOffset, buf.byteLength).getInt8(off);
         const u8 = (buf, off) => buf[off];
         const bits = (shift, mask) => (buf, off) => (buf[off] >>> shift) & mask;
         const bit = (mask) => (buf, off) => Boolean(buf[off] & mask);
-
         const bl1 = (val) => val === true ? 1 : val === false ? 0 : null;
         const bl2 = (val) => val === true ? 2 : val === false ? 0 : null;
         const gain = (val) => [-12, -6, 0, 6, 12].includes(val) ? val & 0xff : null;
         const mgain = (val) => Number.isInteger(val) && val >= -12 && val <= 12 ? val & 0xff : null;
-
         const [T8, T16] = (() => {
             const t8 = new Uint8Array(256);
             const t16 = new Uint16Array(256);
@@ -456,7 +487,6 @@
             }
             return [t8, t16];
         })();
-
         function crc8(buf) {
             let c = 0x77;
             for (const b of buf) {
@@ -464,7 +494,6 @@
             }
             return c;
         }
-
         function crc16(buf) {
             let c = 0x3692;
             for (const b of buf) {
@@ -472,7 +501,6 @@
             }
             return c;
         }
-
         function dump(pkt) {
             const pview = new DataView(pkt.buffer, pkt.byteOffset, pkt.byteLength);
             const hdr = pview.getUint16(1, true);
@@ -480,13 +508,11 @@
             const pktLen = hdr & 0x3ff;
             const pktSeq = pview.getUint16(6, true);
             const data = pkt.subarray(11, -2);
-
             const lines = [
                 `Ver: ${pktVer} Len: ${pktLen}(${data.length}) ` +
                 `Src: ${hex(pkt[4])} Dst: ${hex(pkt[5])} ` +
                 `Seq: ${hex(pktSeq, 4)} Type: ${hex(pkt[8])}`,
             ];
-
             for (let i = 0; i < data.length; i += 16) {
                 const chunk = [...data.subarray(i, i + 16)];
                 const left = chunk.slice(0, 8).map((b) => hex(b)).join(' ');
@@ -495,12 +521,9 @@
                 const asciiStr = chunk.map((b) => (32 <= b && b <= 126) ? String.fromCharCode(b) : '.').join('');
                 lines.push(`${hex(i, 4)} ${hexStr.padEnd(48, ' ')} |${asciiStr}|`);
             }
-
             return lines.join('\n');
         }
-
         const ADDR = { rx: 0, tx1: 1 << 0, tx2: 1 << 1, tx: 0xffff };
-
         const RULES = {
             rx: {
                 firmwareVersion: [0x01, 9, ver],
@@ -537,7 +560,6 @@
                 voiceToneBright: [0x03, 9, bit(0x80), 0x29, bl2, 'DJI Mic Mini 2'],
             },
         };
-
         let usbDev = null;
         let state = null;
         let seq = 0;
@@ -545,11 +567,9 @@
         const cfgQueue = [];
         const txQueue = [];
         let txWorker = null;
-
         function toNode(node) {
             return ['tx1', 'tx2'].includes(node) ? 'txi' : node;
         }
-
         function valid(node, rule, write = false, typ = null, sz = null, base = null) {
             if (write) {
                 if (rule.length < 5) {
@@ -560,7 +580,6 @@
                     return false;
                 }
             }
-
             const rName = rule.at(-1);
             if (typeof rName !== 'string') {
                 return true;
@@ -568,25 +587,20 @@
             if (!write && rName.startsWith('+')) {
                 return true;
             }
-
             let nodeName = null;
             if (['rx', 'tx'].includes(node)) {
                 nodeName = state.rx.deviceName;
             } else if (['tx1', 'tx2'].includes(node)) {
                 nodeName = state[node].deviceName;
             }
-
             return nodeName === (rName.startsWith('+') ? rName.slice(1) : rName);
         }
-
         function scan(data) {
             const sz = data.length;
             if (sz < 4) {
                 return { typ: null, rx: null, tx1: null, tx2: null };
             }
-
             const blk = { typ: data[3], rx: null, tx1: null, tx2: null };
-
             if (blk.typ === 0x01 && sz >= 45) {
                 blk.rx = 0;
                 let i = 45 + data[44];
@@ -598,7 +612,6 @@
                 }
                 return blk;
             }
-
             if (blk.typ === 0x03 && sz >= 41) {
                 blk.rx = 0;
                 for (let i = 41; i < sz - 31; i += 32) {
@@ -608,7 +621,6 @@
                 }
                 return blk;
             }
-
             if (blk.typ === 0x05 && sz >= 10) {
                 for (let i = 3; i < sz - 6; i += 7) {
                     if (data[i] === 0x05 && [1, 2].includes(data[i + 1])) {
@@ -617,10 +629,8 @@
                 }
                 return blk;
             }
-
             return blk;
         }
-
         function read(node, data, typ, base, obj) {
             for (const [key, rule] of Object.entries(RULES[toNode(node)])) {
                 if (!valid(node, rule, false, typ, data.length, base)) {
@@ -629,23 +639,18 @@
                 obj[key] = rule[2](data, base + rule[1]);
             }
         }
-
         function init(node) {
             return Object.fromEntries(Object.keys(RULES[node]).map((key) => [key, null]));
         }
-
         function parse(pkt) {
             if (pkt[9] !== 0x5b || pkt[10] !== 0x03) {
                 return;
             }
-
             const data = pkt.subarray(11, -2);
             const blk = scan(data);
-
             if (blk.rx !== null) {
                 read('rx', data, blk.typ, blk.rx, state.rx);
             }
-
             for (const n of [1, 2]) {
                 const base = blk[`tx${n}`];
                 if (base === null) {
@@ -654,26 +659,22 @@
                     }
                     continue;
                 }
-
                 if (!state[`tx${n}`]) {
                     state[`tx${n}`] = init('txi');
                 }
                 read(`tx${n}`, data, blk.typ, base, state[`tx${n}`]);
             }
-
             if (blk.tx1 === null && blk.tx2 === null) {
                 if (blk.typ === 0x01 || blk.typ === 0x03) {
                     state.tx = null;
                 }
                 return;
             }
-
             if (!state.tx) {
                 state.tx = init('tx');
             }
             read('tx', data, blk.typ, blk.tx1 ?? blk.tx2, state.tx);
         }
-
         async function flush() {
             while (txQueue.length > 0) {
                 if (!usbDev?.opened) {
@@ -693,12 +694,10 @@
             }
             txWorker = null;
         }
-
         async function send(nodeAddr, cmd, val) {
             if (!usbDev) {
                 return;
             }
-
             const pkt = new Uint8Array(22);
             const pview = new DataView(pkt.buffer);
             pkt[0] = 0x55;
@@ -712,20 +711,16 @@
                 0x00, 0x00, cmd, 0x00, 0x01, val,
             ], 8);
             pview.setUint16(20, crc16(pkt.subarray(0, 20)), true);
-
             seq = (seq + 1) & 0xffff;
-
             txQueue.push(pkt);
             txWorker ??= flush();
             return txWorker;
         }
-
         const ctrl = new Proxy({}, {
             get(_, node) {
                 if (!state[node]) {
                     return state[node] ?? undefined;
                 }
-
                 return new Proxy(state[node], {
                     set(obj, key, val) {
                         if (!Object.hasOwn(obj, key) || obj[key] === val) {
@@ -742,14 +737,12 @@
                         if (enc === null) {
                             return true;
                         }
-
                         send(ADDR[node], rule[3], enc).catch(() => { });
                         return true;
                     }
                 });
             }
         });
-
         function pick(node) {
             if (!state?.[node]) {
                 return undefined;
@@ -760,27 +753,40 @@
             );
         }
 
-        // ==================== 自定义UI刷新逻辑（完全重写） ====================
+        // ==================== UI 同步逻辑 ====================
         const gainVal = document.getElementById('gainVal');
         const monitorVal = document.getElementById('monitorVal');
         const noiseBtns = document.querySelectorAll('.noise-btn');
 
-        // 辅助函数：显示/隐藏元素
         function showElement(id) {
             document.getElementById(id).classList.remove('hidden-by-default');
         }
-
         function hideElement(id) {
             document.getElementById(id).classList.add('hidden-by-default');
         }
-
-        // 检查值是否有效（非null且非undefined）
         function hasValue(val) {
             return val !== null && val !== undefined;
         }
 
+        function showError(msg) {
+            errorTip.textContent = msg;
+            errorTip.classList.remove('hidden-by-default');
+        }
+        function clearError() {
+            errorTip.classList.add('hidden-by-default');
+            errorTip.textContent = '';
+        }
+
         function sync() {
             const cfg = { rx: pick('rx'), tx: pick('tx'), tx1: pick('tx1'), tx2: pick('tx2') };
+            
+            // 更新连接状态显示
+            if (state?.rx?.deviceName) {
+                connStatusText.textContent = '已连接';
+                connBtn.disabled = true;
+                disconnBtn.disabled = false;
+                clearError();
+            }
 
             // 更新所有输入控件
             cfgInputs.forEach(el => {
@@ -799,48 +805,25 @@
                 }
             });
 
-            // ==================== 动态显示/隐藏所有元素 ====================
-
             // 1. 声道设置卡片
             let channelCardHasContent = false;
-
-            // 立体声模式
             if (hasValue(state?.rx?.stereo)) {
                 showElement('stereoRow');
                 channelCardHasContent = true;
-            } else {
-                hideElement('stereoRow');
-            }
-
-            // 安全音轨
+            } else hideElement('stereoRow');
             if (hasValue(state?.rx?.safetyTrack)) {
                 showElement('safetyTrackRow');
                 channelCardHasContent = true;
-            } else {
-                hideElement('safetyTrackRow');
-            }
-
-            // 增益调节
+            } else hideElement('safetyTrackRow');
             if (hasValue(state?.rx?.gainControl)) {
                 showElement('gainRow');
                 channelCardHasContent = true;
-            } else {
-                hideElement('gainRow');
-            }
-
-            // 监听增益
+            } else hideElement('gainRow');
             if (hasValue(state?.rx?.monitoringGain)) {
                 showElement('monitorRow');
                 channelCardHasContent = true;
-            } else {
-                hideElement('monitorRow');
-            }
-
-            if (channelCardHasContent) {
-                showElement('channelCard');
-            } else {
-                hideElement('channelCard');
-            }
+            } else hideElement('monitorRow');
+            channelCardHasContent ? showElement('channelCard') : hideElement('channelCard');
 
             // 2. 降噪卡片
             if (hasValue(state?.tx?.noiseCancellation) && hasValue(state?.tx?.noiseCancellationStrong)) {
@@ -853,9 +836,7 @@
                 } else {
                     noiseBtns[0].classList.add("active");
                 }
-            } else {
-                hideElement('noiseCard');
-            }
+            } else hideElement('noiseCard');
 
             // 3. TX1 卡片
             if (state?.tx1) {
@@ -865,9 +846,7 @@
                 const rawVol1 = state.tx1.inputLevel ?? 0;
                 const vol1 = Math.min(100, rawVol1);
                 document.getElementById('tx1Level').style.width = vol1 + "%";
-            } else {
-                hideElement('tx1Wrap');
-            }
+            } else hideElement('tx1Wrap');
 
             // 4. TX2 卡片
             if (state?.tx2) {
@@ -877,139 +856,36 @@
                 const rawVol2 = state.tx2.inputLevel ?? 0;
                 const vol2 = Math.min(100, rawVol2);
                 document.getElementById('tx2Level').style.width = vol2 + "%";
-            } else {
-                hideElement('tx2Wrap');
-            }
+            } else hideElement('tx2Wrap');
 
             // 5. 更多设置卡片
             let moreCardHasContent = false;
-
-            // 低切
-            if (hasValue(state?.tx?.lowCut)) {
-                showElement('lowCutRow');
-                moreCardHasContent = true;
-            } else {
-                hideElement('lowCutRow');
-            }
-
-            // 自动防爆音
-            if (hasValue(state?.rx?.clippingControl)) {
-                showElement('clippingControlRow');
-                moreCardHasContent = true;
-            } else {
-                hideElement('clippingControlRow');
-            }
-
-            // 麦克风指示灯
-            if (hasValue(state?.tx?.micLedOff)) {
-                showElement('micLedOffRow');
-                moreCardHasContent = true;
-            } else {
-                hideElement('micLedOffRow');
-            }
-
-            // 发射器自动关机
-            if (hasValue(state?.tx?.autoOff)) {
-                showElement('autoOffRow');
-                moreCardHasContent = true;
-            } else {
-                hideElement('autoOffRow');
-            }
-
-            // 免插拔外接扬声器
-            if (hasValue(state?.rx?.plugFreeExternalSpeaker)) {
-                showElement('plugFreeRow');
-                moreCardHasContent = true;
-            } else {
-                hideElement('plugFreeRow');
-            }
-
-            if (moreCardHasContent) {
-                showElement('moreCard');
-            } else {
-                hideElement('moreCard');
-            }
+            if (hasValue(state?.tx?.lowCut)) { showElement('lowCutRow'); moreCardHasContent = true; } else hideElement('lowCutRow');
+            if (hasValue(state?.rx?.clippingControl)) { showElement('clippingControlRow'); moreCardHasContent = true; } else hideElement('clippingControlRow');
+            if (hasValue(state?.tx?.micLedOff)) { showElement('micLedOffRow'); moreCardHasContent = true; } else hideElement('micLedOffRow');
+            if (hasValue(state?.tx?.autoOff)) { showElement('autoOffRow'); moreCardHasContent = true; } else hideElement('autoOffRow');
+            if (hasValue(state?.rx?.plugFreeExternalSpeaker)) { showElement('plugFreeRow'); moreCardHasContent = true; } else hideElement('plugFreeRow');
+            moreCardHasContent ? showElement('moreCard') : hideElement('moreCard');
 
             // 6. 设备信息卡片
             let infoCardHasContent = false;
-
-            // 接收器固件
-            if (hasValue(state?.rx?.firmwareVersion)) {
-                showElement('rxVerLine');
-                document.getElementById('rxVer').textContent = state.rx.firmwareVersion;
-                infoCardHasContent = true;
-            } else {
-                hideElement('rxVerLine');
-            }
-
-            // 接收器序列号
-            if (hasValue(state?.rx?.serialNumber)) {
-                showElement('rxSnLine');
-                document.getElementById('rxSn').textContent = state.rx.serialNumber;
-                infoCardHasContent = true;
-            } else {
-                hideElement('rxSnLine');
-            }
-
-            // TX1 固件
-            if (hasValue(state?.tx1?.firmwareVersion)) {
-                showElement('tx1VerLine');
-                document.getElementById('tx1Ver').textContent = state.tx1.firmwareVersion;
-                infoCardHasContent = true;
-            } else {
-                hideElement('tx1VerLine');
-            }
-
-            // TX1 序列号
-            if (hasValue(state?.tx1?.serialNumber)) {
-                showElement('tx1SnLine');
-                document.getElementById('tx1Sn').textContent = state.tx1.serialNumber;
-                infoCardHasContent = true;
-            } else {
-                hideElement('tx1SnLine');
-            }
-
-            // TX2 固件
-            if (hasValue(state?.tx2?.firmwareVersion)) {
-                showElement('tx2VerLine');
-                document.getElementById('tx2Ver').textContent = state.tx2.firmwareVersion;
-                infoCardHasContent = true;
-            } else {
-                hideElement('tx2VerLine');
-            }
-
-            // TX2 序列号
-            if (hasValue(state?.tx2?.serialNumber)) {
-                showElement('tx2SnLine');
-                document.getElementById('tx2Sn').textContent = state.tx2.serialNumber;
-                infoCardHasContent = true;
-            } else {
-                hideElement('tx2SnLine');
-            }
-
-            if (infoCardHasContent) {
-                showElement('infoCard');
-            } else {
-                hideElement('infoCard');
-            }
+            if (hasValue(state?.rx?.firmwareVersion)) { showElement('rxVerLine'); document.getElementById('rxVer').textContent = state.rx.firmwareVersion; infoCardHasContent = true; } else hideElement('rxVerLine');
+            if (hasValue(state?.rx?.serialNumber)) { showElement('rxSnLine'); document.getElementById('rxSn').textContent = state.rx.serialNumber; infoCardHasContent = true; } else hideElement('rxSnLine');
+            if (hasValue(state?.tx1?.firmwareVersion)) { showElement('tx1VerLine'); document.getElementById('tx1Ver').textContent = state.tx1.firmwareVersion; infoCardHasContent = true; } else hideElement('tx1VerLine');
+            if (hasValue(state?.tx1?.serialNumber)) { showElement('tx1SnLine'); document.getElementById('tx1Sn').textContent = state.tx1.serialNumber; infoCardHasContent = true; } else hideElement('tx1SnLine');
+            if (hasValue(state?.tx2?.firmwareVersion)) { showElement('tx2VerLine'); document.getElementById('tx2Ver').textContent = state.tx2.firmwareVersion; infoCardHasContent = true; } else hideElement('tx2VerLine');
+            if (hasValue(state?.tx2?.serialNumber)) { showElement('tx2SnLine'); document.getElementById('tx2Sn').textContent = state.tx2.serialNumber; infoCardHasContent = true; } else hideElement('tx2SnLine');
+            infoCardHasContent ? showElement('infoCard') : hideElement('infoCard');
 
             // 7. 版权信息
-            if (state?.rx?.deviceName) {
-                showElement('copyright');
-            } else {
-                hideElement('copyright');
-            }
+            state?.rx?.deviceName ? showElement('copyright') : hideElement('copyright');
         }
 
         function apply() {
-            if (!state?.rx.deviceName) {
-                return;
-            }
+            if (!state?.rx.deviceName) return;
             while (cfgQueue.length > 0) {
                 const cfg = cfgQueue.shift();
-                if (!isObj(cfg)) {
-                    continue;
-                }
+                if (!isObj(cfg)) continue;
                 let spk;
                 if (isObj(cfg.rx)) {
                     const { plugFreeExternalSpeaker, ...cfgRx } = cfg.rx;
@@ -1027,43 +903,27 @@
             let buf = new Uint8Array();
             while (dev.opened) {
                 const res = await dev.transferIn(6, 1024);
-                if (res.status !== 'ok' || res.data.byteLength === 0) {
-                    continue;
-                }
+                if (res.status !== 'ok' || res.data.byteLength === 0) continue;
                 buf = concat(buf, new Uint8Array(res.data.buffer, res.data.byteOffset, res.data.byteLength));
                 let off = 0;
                 const view = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
                 while (off < buf.length) {
                     const idx = buf.indexOf(0x55, off);
-                    if (idx < 0) {
-                        off = buf.length;
-                        break;
-                    }
+                    if (idx < 0) { off = buf.length; break; }
                     off = idx;
                     if (buf.length - off < 4) break;
-                    if (crc8(buf.subarray(off, off + 3)) !== buf[off + 3]) {
-                        off++;
-                        continue;
-                    }
+                    if (crc8(buf.subarray(off, off + 3)) !== buf[off + 3]) { off++; continue; }
                     const sz = view.getUint16(off + 1, true) & 0x3ff;
-                    if (sz < 13) {
-                        off++;
-                        continue;
-                    }
+                    if (sz < 13) { off++; continue; }
                     if (sz > buf.length - off) break;
                     const pkt = buf.subarray(off, off + sz);
-                    if (crc16(pkt.subarray(0, sz - 2)) !== view.getUint16(off + sz - 2, true)) {
-                        off++;
-                        continue;
-                    }
+                    if (crc16(pkt.subarray(0, sz - 2)) !== view.getUint16(off + sz - 2, true)) { off++; continue; }
                     off += sz;
                     yield pkt;
                 }
                 buf = buf.slice(off);
             }
         }
-
-        const prune = (_, val) => val === null ? undefined : val;
 
         async function main() {
             usbDev = await navigator.usb.requestDevice({ filters: [{ vendorId: 0x2ca3, productId: 0x4011 }] });
@@ -1080,19 +940,60 @@
             }
         }
 
-        // 原版原始事件绑定
+        // ==================== 交互事件与兼容性检测 ====================
+        // 页面加载时检测浏览器支持
+        window.addEventListener('DOMContentLoaded', () => {
+            if (!navigator.usb) {
+                connBtn.disabled = true;
+                connStatusText.textContent = '不支持';
+                showError('当前浏览器不支持 Web USB，请使用 Chrome / Edge 浏览器');
+            }
+            sync();
+        });
+
+        // 连接按钮
         connBtn.addEventListener('click', async () => {
+            clearError();
             connBtn.disabled = true;
+            connBtn.textContent = '连接中';
             try {
                 await main();
             } catch (e) {
+                // 错误可视化显示
+                if (e.message.includes('No device selected')) {
+                    showError('已取消设备选择');
+                } else {
+                    showError('连接失败：' + e.message);
+                }
                 stateTxt.textContent = JSON.stringify({ 错误: e.message }, null, 2);
             } finally {
                 sync();
-                connBtn.disabled = false;
+                if (!usbDev?.opened) {
+                    connBtn.disabled = false;
+                    connBtn.textContent = '连接设备';
+                }
             }
         });
 
+        // 断开按钮
+        disconnBtn.addEventListener('click', async () => {
+            if (usbDev?.opened) {
+                try {
+                    await usbDev.close();
+                } catch(e) {
+                    console.error(e);
+                }
+            }
+            usbDev = null;
+            state = null;
+            connStatusText.textContent = '未连接';
+            connBtn.disabled = false;
+            connBtn.textContent = '连接设备';
+            disconnBtn.disabled = true;
+            sync();
+        });
+
+        // 控件输入事件
         cfgGrp.addEventListener('input', (e) => {
             if (e.target.type !== 'range') return;
             const out = e.target.nextElementSibling;
@@ -1110,14 +1011,20 @@
             apply();
         });
 
+        // 设备拔出监听
         navigator.usb.addEventListener('disconnect', (e) => {
-            if (e.device === usbDev) try {
-                usbDev.close();
-            } catch { }
+            if (e.device === usbDev) {
+                try { usbDev.close(); } catch { }
+                usbDev = null;
+                state = null;
+                connStatusText.textContent = '已断开';
+                connBtn.disabled = false;
+                connBtn.textContent = '连接设备';
+                disconnBtn.disabled = true;
+                showError('设备已断开连接');
+                sync();
+            }
         });
-
-        // 初始同步（此时所有元素都是隐藏的）
-        sync();
     </script>
 </body>
 </html>
